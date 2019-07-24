@@ -34,7 +34,7 @@ public class CustomButton extends AppCompatButton {
         super.onDraw(canvas);
         setBackground(isEnabled() ? enabledBackground : disabledBackground);
         setTextColor(textColor);
-        setTextSize(12.f);
+        setTextSize(10.f);
         setGravity(CENTER);
         setText(getContext().getString(R.string.submit_search));
     }
