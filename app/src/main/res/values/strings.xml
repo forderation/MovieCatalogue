@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">Movie DB</string>
+    <string name="title_home">Movie DB Home</string>
+    <string name="movie_nav">Movies</string>
+    <string name="tv_show_nav">TV Shows</string>
+    <string name="title_movie">Aquaman</string>
+    <string name="overview_movie">Once home to the most advanced civilization on Earth, Atlantis is now an underwater kingdom ruled by the power-hungry King Orm. With a vast army at his disposal, Orm plans to conquer the remaining oceanic people and then the surface world. Standing in his way is Arthur Curry, Orms half-human, half-Atlantean brother and true heir to the throne.</string>
+    <string name="release_date_movie">2018–12–07</string>
+    <string name="film_poster">Film Poster</string>
+    <string name="bar_title_movie">Popular Movies</string>
+    <string name="bar_title_tv">Popular TV Shows</string>
+    <string name="bar_title_favourite_movie">Favourite List</string>
+    <string name="loading_data">Loading get data. Please wait …</string>
+    <string name="language_settings">Change language settings</string>
+    <string name="reload_app">Reload get data</string>
+    <string name="instruction_restart">Successfully change settings please refresh app</string>
+    <string name="title_activity_movie_detail" translatable="false">MovieDetailActivity</string>
+    <string name="action_menu_favourite">Add as favourite</string>
+    <string name="poster_image">Poster Image</string>
+    <string name="visit_url">Are you sure to visit homepage ?</string>
+    <string name="sure_visit">SURE</string>
+    <string name="url_not_found">Sorry can\'t find homepage :(</string>
+    <string name="tv_title">Title:</string>
+    <string name="tv_release_date">Release date:</string>
+    <string name="tv_18">Content for:</string>
+    <string name="tv_current_status">Current status:</string>
+    <string name="tv_overview">Overview:</string>
+    <string name="tv_original_language">Original language:</string>
+    <string name="tv_homepage">Homepage:</string>
+    <string name="tv_vote_average">Vote Average:</string>
+    <string name="img_poster_image">Poster Image</string>
+    <string name="tv_original_name">Original name:</string>
+    <string name="tv_first_air_date">First air date:</string>
+    <string name="update_db">Favourite list has been updated</string>
+    <string name="favorite">Favorite</string>
+    <string name="key_preference" translatable="false">movie_catalogue_setting</string>
+    <string name="key_favourite" translatable="false">is_favourite_changed</string>
+    <string name="succes_add_favourite">Success add to Favourite list</string>
+    <string name="succes_remove_favourite">Success removed from Favourite list</string>
+    <string name="fail_change_stat">Ops something wrong</string>
+    <string name="submit_search">Search</string>
+    <string name="search_field">Fill first</string>
+    <string name="search_not_available">Search not available for this page</string>
+</resources>

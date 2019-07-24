@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Movie DB</string>
+    <string name="title_home">Movie DB Beranda</string>
+    <string name="movie_nav">Film</string>
+    <string name="tv_show_nav">Acara TV</string>
+    <string name="title_movie">Aquaman</string>
+    <string name="overview_movie">Once home to the most advanced civilization on Earth, Atlantis is now an underwater kingdom ruled by the power-hungry King Orm. With a vast army at his disposal, Orm plans to conquer the remaining oceanic people and then the surface world. Standing in his way is Arthur Curry, Orms half-human, half-Atlantean brother and true heir to the throne.</string>
+    <string name="release_date_movie">2018–12–07</string>
+    <string name="film_poster">Poster Film</string>
+    <string name="bar_title_movie">Film Populer</string>
+    <string name="bar_title_tv">Acara TV Populer</string>
+    <string name="loading_data">Proses mengunduh data. harap tunggu …</string>
+    <string name="language_settings">Ganti pengaturan bahasa</string>
+    <string name="tv_18">Batasan konten:</string>
+    <string name="reload_app">Muat kembali data</string>
+    <string name="instruction_restart">Sukses merubah pengaturan harap muat ulang kembali aplikasi</string>
+    <string name="action_menu_favourite">Tambahkan ke favorit</string>
+    <string name="poster_image">Gambar Poster</string>
+    <string name="visit_url">Apakah anda ingin mengunjungi situs ?</string>
+    <string name="sure_visit">TENTU</string>
+    <string name="url_not_found">Maaf situs tidak ditemukan :(</string>
+    <string name="tv_title">Judul:</string>
+    <string name="tv_release_date">Tanggal Rilis:</string>
+    <string name="tv_current_status">Status terkini:</string>
+    <string name="tv_overview">Deskripsi:</string>
+    <string name="tv_original_language">Bahasa yang digunakan:</string>
+    <string name="tv_homepage">Alamat situs:</string>
+    <string name="tv_vote_average">Voting rata-rata:</string>
+    <string name="img_poster_image">Gambar poster</string>
+    <string name="tv_original_name">Judul asli:</string>
+    <string name="tv_first_air_date">Pertama tayang:</string>
+    <string name="favorite">Favorit</string>
+    <string name="bar_title_favourite_movie">Daftar Favorit</string>
+    <string name="update_db">Daftar favorit telah diperbarui</string>
+    <string name="fail_change_stat">Terjadi kesalahan perbaruan</string>
+    <string name="succes_add_favourite">Sukses menambahkan ke daftar favorit</string>
+    <string name="succes_remove_favourite">Sukses menghapus dari daftar favorit</string>
+    <string name="search_field">isi dahulu</string>
+    <string name="submit_search">Cari</string>
+    <string name="search_not_available">Pencarian tidak tersedia untuk halaman ini</string>
+</resources>
