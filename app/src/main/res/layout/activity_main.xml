@@ -8,36 +8,40 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.example.submission3.CustomView.CustomEdtText
-        android:id="@+id/edit_text"
+    <LinearLayout
+        android:id="@+id/search_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/search_button"
-        app:layout_constraintStart_toStartOf="@+id/container_layout"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.example.submission3.CustomView.CustomButton
-        android:id="@+id/search_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/edit_text"
-        app:layout_constraintEnd_toEndOf="@+id/container_layout"
-        app:layout_constraintTop_toTopOf="@+id/edit_text" />
+        <com.example.submission3.CustomView.CustomEdtText
+            android:id="@+id/edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:layout_weight="1" />
+
+        <com.example.submission3.CustomView.CustomButton
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_vertical_margin" />
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/container_layout"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text" />
+        app:layout_constraintTop_toBottomOf="@+id/search_layout" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
