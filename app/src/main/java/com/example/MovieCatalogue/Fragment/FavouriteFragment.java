@@ -1,4 +1,4 @@
-package com.example.submission3.Fragment;
+package com.example.MovieCatalogue.Fragment;
 
 
 import android.content.Context;
@@ -9,18 +9,16 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.submission3.Adapter.SectionsPagerAdapter;
-import com.example.submission3.PlainOldJavaObject.Movie;
-import com.example.submission3.PlainOldJavaObject.TVShow;
-import com.example.submission3.R;
+import com.example.MovieCatalogue.Adapter.SectionsPagerAdapter;
+import com.example.MovieCatalogue.PlainOldJavaObject.Movie;
+import com.example.MovieCatalogue.PlainOldJavaObject.TVShow;
+import com.example.MovieCatalogue.R;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.

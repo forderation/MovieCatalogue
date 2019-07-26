@@ -1,4 +1,4 @@
-package com.example.submission3.Database;
+package com.example.MovieCatalogue.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,19 +6,18 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.submission3.PlainOldJavaObject.Movie;
-import com.example.submission3.PlainOldJavaObject.TVShow;
+import com.example.MovieCatalogue.PlainOldJavaObject.Movie;
+import com.example.MovieCatalogue.PlainOldJavaObject.TVShow;
 
 import java.util.ArrayList;
 
-import static com.example.submission3.Database.DatabaseContract.MovieColumns._ID;
-import static com.example.submission3.Database.DatabaseContract.MovieColumns.idJSON;
-import static com.example.submission3.Database.DatabaseContract.MovieColumns.isMovie;
+import static com.example.MovieCatalogue.Database.DatabaseContract.MovieColumns._ID;
+import static com.example.MovieCatalogue.Database.DatabaseContract.MovieColumns.idJSON;
+import static com.example.MovieCatalogue.Database.DatabaseContract.MovieColumns.isMovie;
 
 public class FavouriteHelper {
     private static final String TABLE_NAME = DatabaseContract.TABLE_MOVIE;
     private static DatabaseHelper dataBaseHelper;
-    private static FavouriteHelper INSTANCE;
     private static SQLiteDatabase database;
 
     private FavouriteHelper(Context context) {
@@ -26,8 +25,7 @@ public class FavouriteHelper {
     }
 
     public static FavouriteHelper getInstance(Context context){
-        INSTANCE = new FavouriteHelper(context);
-        return INSTANCE;
+        return new FavouriteHelper(context);
     }
 
     public void open() throws SQLException {

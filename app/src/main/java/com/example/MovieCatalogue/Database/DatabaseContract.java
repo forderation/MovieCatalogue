@@ -1,4 +1,4 @@
-package com.example.submission3.Database;
+package com.example.MovieCatalogue.Database;
 import android.provider.BaseColumns;
 
 public class DatabaseContract {

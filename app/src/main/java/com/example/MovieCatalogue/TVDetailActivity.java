@@ -1,4 +1,4 @@
-package com.example.submission3;
+package com.example.MovieCatalogue;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,9 +16,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.submission3.Database.FavouriteHelper;
-import com.example.submission3.PlainOldJavaObject.Movie;
-import com.example.submission3.PlainOldJavaObject.TVShow;
+import com.example.MovieCatalogue.Database.FavouriteHelper;
+import com.example.MovieCatalogue.PlainOldJavaObject.Movie;
+import com.example.MovieCatalogue.PlainOldJavaObject.TVShow;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package com.example.submission3.Adapter;
+package com.example.MovieCatalogue.Adapter;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

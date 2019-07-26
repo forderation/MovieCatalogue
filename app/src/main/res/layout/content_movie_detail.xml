@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MovieDetailActivity"
+    android:background="@color/colorPrimaryDark"
     tools:showIn="@layout/activity_movie_detail">
 
     <android.support.constraint.ConstraintLayout
@@ -36,6 +37,7 @@
             android:contentDescription="@string/img_poster_image" />
 
         <TextView
+            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:textStyle="bold"
@@ -48,6 +50,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <TextView
+            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/tv_release_date"
             android:layout_width="0dp"
             android:transitionName="release_date"
@@ -60,6 +63,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
         <TextView
+            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/tv_adult"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -72,6 +76,7 @@
             app:layout_constraintTop_toBottomOf="@+id/image_poster" />
 
         <TextView
+            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/tv_overview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -84,6 +89,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
         <TextView
+            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/tv_original_language"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -96,6 +102,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_overview" />
 
         <TextView
+            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/tv_vote"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -108,6 +115,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_original_language" />
 
         <TextView
+            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,6 +125,7 @@
             app:layout_constraintTop_toTopOf="@+id/image_poster" />
 
         <TextView
+            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,6 +135,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
         <TextView
+            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -135,6 +145,7 @@
             app:layout_constraintTop_toBottomOf="@+id/image_poster" />
 
         <TextView
+            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -146,6 +157,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_adult" />
 
         <TextView
+            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -155,6 +167,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_overview" />
 
         <TextView
+            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

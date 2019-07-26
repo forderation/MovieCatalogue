@@ -1,11 +1,11 @@
-package com.example.submission3.PlainOldJavaObject;
+package com.example.MovieCatalogue.PlainOldJavaObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.json.JSONObject;
 
-public class TVShow implements Parcelable {
+public class TVShow implements Parcelable,Comparable {
     public static final Creator<TVShow> CREATOR = new Creator<TVShow>() {
         @Override
         public TVShow createFromParcel(Parcel in) {
@@ -138,4 +138,15 @@ public class TVShow implements Parcelable {
         this.firstAirDate = firstAirDate;
     }
 
+    @Override
+    public int compareTo(Object o) {
+        String title = ((TVShow)o).getOriginalName();
+        return getOriginalName().compareTo(title);
+    }
+
+
+    @Override
+    public String toString() {
+        return  getOriginalName();
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.submission3.ViewModel;
+package com.example.MovieCatalogue.ViewModel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -6,8 +6,8 @@ import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.example.submission3.BuildConfig;
-import com.example.submission3.PlainOldJavaObject.Movie;
+import com.example.MovieCatalogue.BuildConfig;
+import com.example.MovieCatalogue.PlainOldJavaObject.TVShow;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -19,36 +19,42 @@ import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 
-public class MovieViewModel extends ViewModel {
+public class TVShowViewModel extends ViewModel {
     private static final String API_KEY = BuildConfig.API_movie_DB;
-    private ArrayList<Movie> listItems = new ArrayList<>();
-    private MutableLiveData<ArrayList<Movie>> listMovies = new MutableLiveData<>();
+    private ArrayList<TVShow> listItems = new ArrayList<>();
+    private MutableLiveData<ArrayList<TVShow>> listTVShows = new MutableLiveData<>();
 
-    private ArrayList<Movie> listItemsFavourite = new ArrayList<>();
-    private MutableLiveData<ArrayList<Movie>> listMoviesFavourite = new MutableLiveData<>();
+    private ArrayList<TVShow> listItemsFavourite = new ArrayList<>();
+    private MutableLiveData<ArrayList<TVShow>> listTVShowsFavourite = new MutableLiveData<>();
 
-
-    public void setMovie(final Context context) {
+    public LiveData<ArrayList<TVShow>> getTVShows() {
+        return listTVShows;
+    }
+    public LiveData<ArrayList<TVShow>> getTVShowsFavourite() {
+        return listTVShowsFavourite;
+    }
+    public void setTVShows(final Context context) {
         final AsyncHttpClient client = new AsyncHttpClient();
         String currentLocale = Locale.getDefault().getLanguage();
         if (currentLocale.compareToIgnoreCase("in") == 0) {
             currentLocale = "id";
         }
-        final String url = "https://api.themoviedb.org/3/movie/popular?api_key=" + API_KEY + "&language=" + currentLocale;
+        final String url = "https://api.themoviedb.org/3/tv/popular?api_key=" + API_KEY + "&language=" + currentLocale;
+        client.setResponseTimeout(10000);
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
-                    String response = new String(responseBody);
-                    JSONObject listObject = new JSONObject(response);
+                    String result = new String(responseBody);
+                    JSONObject listObject = new JSONObject(result);
                     JSONArray resultList = listObject.getJSONArray("results");
                     listItems.clear();
                     for (int i = 0; i < resultList.length(); i++) {
-                        JSONObject movieObject = resultList.getJSONObject(i);
-                        Movie movie = new Movie(movieObject);
-                        listItems.add(movie);
+                        JSONObject tvObject = resultList.getJSONObject(i);
+                        TVShow tvShow = new TVShow(tvObject);
+                        listItems.add(tvShow);
                     }
-                    listMovies.postValue(listItems);
+                    listTVShows.postValue(listItems);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -62,27 +68,28 @@ public class MovieViewModel extends ViewModel {
         });
     }
 
-    public void setMovie(String query, final Context context){
+    public void setTVShows(String query, final Context context) {
         final AsyncHttpClient client = new AsyncHttpClient();
         String currentLocale = Locale.getDefault().getLanguage();
         if (currentLocale.compareToIgnoreCase("in") == 0) {
             currentLocale = "id";
         }
-        final String url = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&query=" + query +"&language=" + currentLocale;
+        final String url = "https://api.themoviedb.org/3/search/tv?api_key=" + API_KEY + "&query=" + query +"&language=" + currentLocale;
+        client.setResponseTimeout(10000);
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
-                    String response = new String(responseBody);
-                    JSONObject listObject = new JSONObject(response);
+                    String result = new String(responseBody);
+                    JSONObject listObject = new JSONObject(result);
                     JSONArray resultList = listObject.getJSONArray("results");
                     listItems.clear();
                     for (int i = 0; i < resultList.length(); i++) {
-                        JSONObject movieObject = resultList.getJSONObject(i);
-                        Movie movie = new Movie(movieObject);
-                        listItems.add(movie);
+                        JSONObject tvObject = resultList.getJSONObject(i);
+                        TVShow tvShow = new TVShow(tvObject);
+                        listItems.add(tvShow);
                     }
-                    listMovies.postValue(listItems);
+                    listTVShows.postValue(listItems);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -104,17 +111,17 @@ public class MovieViewModel extends ViewModel {
         }
         listItemsFavourite.clear();
         for(long id:idJSON){
-            final String url = "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + API_KEY + "&language=" + currentLocale;
+            final String url = "https://api.themoviedb.org/3/tv/" + id + "?api_key=" + API_KEY + "&language=" + currentLocale;
             client.setResponseTimeout(5000);
             client.get(url, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     try {
                         String response = new String(responseBody);
-                        JSONObject movieObject = new JSONObject(response);
-                        Movie movie = new Movie(movieObject);
-                        listItemsFavourite.add(movie);
-                        listMoviesFavourite.postValue(listItemsFavourite);
+                        JSONObject tvObject = new JSONObject(response);
+                        TVShow tvShow = new TVShow(tvObject);
+                        listItemsFavourite.add(tvShow);
+                        listTVShowsFavourite.postValue(listItemsFavourite);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -127,14 +134,5 @@ public class MovieViewModel extends ViewModel {
                 }
             });
         }
-    }
-
-
-    public LiveData<ArrayList<Movie>> getMoviesFavourites() {
-        return listMoviesFavourite;
-    }
-
-    public LiveData<ArrayList<Movie>> getMovies() {
-        return listMovies;
     }
 }

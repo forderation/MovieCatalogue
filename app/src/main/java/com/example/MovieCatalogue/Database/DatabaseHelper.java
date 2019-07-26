@@ -1,4 +1,4 @@
-package com.example.submission3.Database;
+package com.example.MovieCatalogue.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -1,4 +1,4 @@
-package com.example.submission3;
+package com.example.MovieCatalogue;
 
 import org.junit.Test;
 

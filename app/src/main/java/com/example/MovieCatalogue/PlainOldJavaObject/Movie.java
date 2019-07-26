@@ -1,12 +1,13 @@
-package com.example.submission3.PlainOldJavaObject;
+package com.example.MovieCatalogue.PlainOldJavaObject;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.json.JSONObject;
 
-public class Movie implements Parcelable {
+public class Movie implements Parcelable, Comparable {
     public static final String PATH_IMG = "https://image.tmdb.org/t/p/w500";
+    public static final String SMALL_IMG = "https://image.tmdb.org/t/p/w92";
     private long id;
     private String originalTitle, overview, posterPath, voteAverage, releaseDate, backdropPath, originalLanguage;
     private boolean adult;
@@ -139,5 +140,16 @@ public class Movie implements Parcelable {
         dest.writeString(backdropPath);
         dest.writeString(originalLanguage);
         dest.writeByte((byte) (adult ? 1 : 0));
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        String name = ((Movie)o).getOriginalTitle();
+        return getOriginalTitle().compareTo(name);
+    }
+
+    @Override
+    public String toString() {
+        return getOriginalTitle();
     }
 }
