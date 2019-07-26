@@ -1,4 +1,4 @@
-package com.example.submission3;
+package com.example.MovieCatalogue;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.submission3.Database.FavouriteHelper;
-import com.example.submission3.PlainOldJavaObject.Movie;
+import com.example.MovieCatalogue.Database.FavouriteHelper;
+import com.example.MovieCatalogue.PlainOldJavaObject.Movie;
 
 import java.util.Objects;
 
@@ -74,7 +74,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                     .load(Movie.PATH_IMG + movie.getBackdropPath())
                     .apply(new RequestOptions().centerCrop())
                     .into(expandedImage);
-            if (favouriteHelper.isMovieFavourites(movie.getId())) {
+            if (favouriteHelper.isFavourite(movie.getId(),true)) {
                 isActionTrash = true;
                 fab.setImageResource(R.drawable.ic_delete_black_24dp);
             }
@@ -125,7 +125,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                         .show();
             }
         } else {
-            long result = favouriteHelper.insert(movie);
+            long result = favouriteHelper.insert(movie.getId(),true);
             if (result > 0) {
                 isActionTrash = true;
                 fab.setImageResource(R.drawable.ic_delete_black_24dp);

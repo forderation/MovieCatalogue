@@ -12,6 +12,7 @@
     app:cardCornerRadius="4dp"
     android:layout_height="wrap_content">
     <RelativeLayout
+        android:id="@+id/rv_layout"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:padding="8dp">
@@ -37,6 +38,7 @@
             android:layout_toEndOf="@id/img_item_poster"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
             tools:text="@string/title_movie" />
         <TextView
             android:id="@+id/tv_item_date"
@@ -45,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_item_title"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:textColor="@color/colorAccentSecondary"
             android:layout_marginRight="@dimen/activity_vertical_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_toEndOf="@id/img_item_poster"
@@ -54,6 +57,7 @@
             android:transitionName="overview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="@color/colorAccentSecondary"
             android:layout_below="@id/tv_item_date"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
             android:layout_marginRight="@dimen/activity_vertical_margin"

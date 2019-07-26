@@ -1,4 +1,4 @@
-package com.example.submission3;
+package com.example.MovieCatalogue;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,20 +19,22 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.submission3.CustomView.CustomButton;
-import com.example.submission3.CustomView.CustomEdtText;
-import com.example.submission3.Database.FavouriteHelper;
-import com.example.submission3.Fragment.FavouriteFragment;
-import com.example.submission3.Fragment.MovieFragment;
-import com.example.submission3.Fragment.TVShowFragment;
-import com.example.submission3.PlainOldJavaObject.Movie;
-import com.example.submission3.PlainOldJavaObject.TVShow;
-import com.example.submission3.ViewModel.MovieViewModel;
-import com.example.submission3.ViewModel.TVShowViewModel;
+import com.example.MovieCatalogue.CustomView.CustomButton;
+import com.example.MovieCatalogue.CustomView.CustomEdtText;
+import com.example.MovieCatalogue.Database.FavouriteHelper;
+import com.example.MovieCatalogue.Fragment.FavouriteFragment;
+import com.example.MovieCatalogue.Fragment.MovieFragment;
+import com.example.MovieCatalogue.Fragment.TVShowFragment;
+import com.example.MovieCatalogue.PlainOldJavaObject.Movie;
+import com.example.MovieCatalogue.PlainOldJavaObject.TVShow;
+import com.example.MovieCatalogue.ViewModel.MovieViewModel;
+import com.example.MovieCatalogue.ViewModel.TVShowViewModel;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -67,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private CustomButton customButton;
     private CustomEdtText customEdtText;
-
+    private ConstraintLayout container;
+    private ConstraintSet containerSet;
+    private LinearLayout searchLayout;
     private int stateMenu = R.id.movie_nav;
     /*
      * @method_for = implementasi listener bottom navigasi
@@ -78,14 +84,17 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.movie_nav:
+                    showSearchLayout();
                     showMovieFragment();
                     stateMenu = R.id.movie_nav;
                     return true;
                 case R.id.tv_show_nav:
+                    showSearchLayout();
                     showTVShowFragment();
                     stateMenu = R.id.tv_show_nav;
                     return true;
                 case R.id.favourite_nav:
+                    hideSearchLayout();
                     showFavouriteFragment();
                     stateMenu = R.id.favourite_nav;
                     return true;
@@ -93,6 +102,20 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
+
+    private void hideSearchLayout(){
+        containerSet.clone(container);
+        containerSet.connect(R.id.container_layout,ConstraintSet.TOP,R.id.container,ConstraintSet.TOP,16);
+        containerSet.applyTo(container);
+        searchLayout.setVisibility(View.INVISIBLE);
+    }
+
+    private void showSearchLayout(){
+        containerSet.clone(container);
+        containerSet.connect(R.id.container_layout,ConstraintSet.TOP,R.id.search_layout,ConstraintSet.BOTTOM,16);
+        containerSet.applyTo(container);
+        searchLayout.setVisibility(View.VISIBLE);
+    }
 
     private Observer<ArrayList<Movie>> getMovies = new Observer<ArrayList<Movie>>() {
         @Override
@@ -160,6 +183,9 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
         customButton = findViewById(R.id.search_button);
         customEdtText = findViewById(R.id.edit_text);
+        container = findViewById(R.id.container);
+        searchLayout = findViewById(R.id.search_layout);
+        containerSet = new ConstraintSet();
         setMyButtonEnable();
         navigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
@@ -201,11 +227,9 @@ public class MainActivity extends AppCompatActivity {
                     switch (stateMenu) {
                         case R.id.movie_nav:
                             movieViewModel.setMovie(getApplication());
-                            showLoading(true);
                             break;
                         case R.id.tv_show_nav:
                             tvShowViewModel.setTVShows(getApplication());
-                            showLoading(true);
                             break;
                         default:
                             break;
@@ -213,24 +237,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         customButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(customEdtText.getWindowToken(), 0);
                 String query = Objects.requireNonNull(customEdtText.getText()).toString();
                 if (!query.isEmpty()) {
                     switch (stateMenu) {
                         case R.id.movie_nav:
-                            movieViewModel.setMovie(query,getApplication());
+                            movieViewModel.setMovie(query, getApplication());
                             showLoading(true);
                             break;
                         case R.id.tv_show_nav:
-                            tvShowViewModel.setTVShows(query,getApplication());
+                            tvShowViewModel.setTVShows(query, getApplication());
                             showLoading(true);
                             break;
                         default:
-                            Toast.makeText(getApplication(),getString(R.string.search_not_available),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplication(), getString(R.string.search_not_available), Toast.LENGTH_SHORT).show();
                             break;
                     }
                 }
@@ -291,9 +316,9 @@ public class MainActivity extends AppCompatActivity {
         favouriteHelper = FavouriteHelper.getInstance(getApplicationContext());
         favouriteHelper.open();
         listIdFavMovie.clear();
-        listIdFavMovie.addAll(favouriteHelper.getMovieFavourites());
+        listIdFavMovie.addAll(favouriteHelper.getFavourites(true));
         listIdFavTV.clear();
-        listIdFavTV.addAll(favouriteHelper.getTVShowFavourite());
+        listIdFavTV.addAll(favouriteHelper.getFavourites(false));
     }
 
     @Override

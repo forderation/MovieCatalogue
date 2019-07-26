@@ -1,4 +1,4 @@
-package com.example.submission3.Database;
+package com.example.MovieCatalogue.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,8 +13,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     " %s INTEGER NOT NULL)",
             DatabaseContract.TABLE_MOVIE,
             DatabaseContract.MovieColumns._ID,
-            DatabaseContract.MovieColumns.idJSON,
-            DatabaseContract.MovieColumns.isMovie
+            DatabaseContract.MovieColumns.idJSONColumn,
+            DatabaseContract.MovieColumns.isMovieColumn
     );
 
     DatabaseHelper(Context context){
