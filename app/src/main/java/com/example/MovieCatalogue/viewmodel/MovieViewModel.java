@@ -1,4 +1,4 @@
-package com.example.MovieCatalogue.ViewModel;
+package com.example.MovieCatalogue.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -7,7 +7,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.example.MovieCatalogue.BuildConfig;
-import com.example.MovieCatalogue.PlainOldJavaObject.Movie;
+import com.example.MovieCatalogue.model.Movie;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 

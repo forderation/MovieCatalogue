@@ -1,4 +1,4 @@
-package com.example.MovieCatalogue.CustomView;
+package com.example.MovieCatalogue.customview;
 
 import android.content.Context;
 import android.graphics.Canvas;

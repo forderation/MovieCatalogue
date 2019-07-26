@@ -1,4 +1,4 @@
-package com.example.MovieCatalogue.Adapter;
+package com.example.MovieCatalogue.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,11 +21,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.MovieCatalogue.MovieDetailActivity;
-import com.example.MovieCatalogue.PlainOldJavaObject.Movie;
+import com.example.MovieCatalogue.model.Movie;
 import com.example.MovieCatalogue.R;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
@@ -46,7 +45,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public void setListMovie(ArrayList<Movie> itemList) {
         listMovie.clear();
         listMovie.addAll(itemList);
-        Collections.sort(listMovie);
         notifyDataSetChanged();
     }
 

@@ -1,4 +1,4 @@
-package com.example.MovieCatalogue.PlainOldJavaObject;
+package com.example.MovieCatalogue.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

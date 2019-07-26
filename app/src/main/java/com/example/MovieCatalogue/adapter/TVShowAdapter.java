@@ -1,4 +1,4 @@
-package com.example.MovieCatalogue.Adapter;
+package com.example.MovieCatalogue.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,8 +20,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.example.MovieCatalogue.PlainOldJavaObject.Movie;
-import com.example.MovieCatalogue.PlainOldJavaObject.TVShow;
+import com.example.MovieCatalogue.model.Movie;
+import com.example.MovieCatalogue.model.TVShow;
 import com.example.MovieCatalogue.R;
 import com.example.MovieCatalogue.TVDetailActivity;
 
@@ -46,7 +46,6 @@ public class TVShowAdapter extends RecyclerView.Adapter<TVShowAdapter.ViewHolder
     public void setTvShowList(ArrayList<TVShow> tvArrayList) {
         this.tvShowArrayList.clear();
         this.tvShowArrayList.addAll(tvArrayList);
-        Collections.sort(tvShowArrayList);
         notifyDataSetChanged();
     }
 

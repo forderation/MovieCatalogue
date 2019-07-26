@@ -16,9 +16,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.MovieCatalogue.Database.FavouriteHelper;
-import com.example.MovieCatalogue.PlainOldJavaObject.Movie;
-import com.example.MovieCatalogue.PlainOldJavaObject.TVShow;
+import com.example.MovieCatalogue.database.FavouriteHelper;
+import com.example.MovieCatalogue.model.Movie;
+import com.example.MovieCatalogue.model.TVShow;
 
 import java.util.Objects;
 

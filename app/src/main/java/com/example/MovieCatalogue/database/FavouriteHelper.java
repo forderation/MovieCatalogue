@@ -1,4 +1,4 @@
-package com.example.MovieCatalogue.Database;
+package com.example.MovieCatalogue.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,14 +6,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.MovieCatalogue.PlainOldJavaObject.Movie;
-import com.example.MovieCatalogue.PlainOldJavaObject.TVShow;
-
 import java.util.ArrayList;
 
-import static com.example.MovieCatalogue.Database.DatabaseContract.MovieColumns._ID;
-import static com.example.MovieCatalogue.Database.DatabaseContract.MovieColumns.idJSONColumn;
-import static com.example.MovieCatalogue.Database.DatabaseContract.MovieColumns.isMovieColumn;
+import static com.example.MovieCatalogue.database.DatabaseContract.MovieColumns._ID;
+import static com.example.MovieCatalogue.database.DatabaseContract.MovieColumns.idJSONColumn;
+import static com.example.MovieCatalogue.database.DatabaseContract.MovieColumns.isMovieColumn;
 
 public class FavouriteHelper {
     private static final String TABLE_NAME = DatabaseContract.TABLE_MOVIE;
@@ -44,12 +41,14 @@ public class FavouriteHelper {
         }
     }
 
+    private ArrayList<Long> listFavourites = new ArrayList<>();
+
     public ArrayList<Long> getFavourites(boolean isMovie) {
-        final int isMovieIndicator = isMovie? 1:0;
+        int isMovieIndicator = isMovie? 1:0;
         Cursor cursor = database.query(TABLE_NAME, null, isMovieColumn +" = '"+isMovieIndicator+"'", null,
                 null, null, _ID + " ASC", null);
         cursor.moveToFirst();
-        ArrayList<Long> listFavourites = new ArrayList<>();
+        listFavourites.clear();
         if (cursor.getCount() > 0) {
             do {
                 listFavourites.add(cursor.getLong(cursor.getColumnIndexOrThrow(idJSONColumn)));
@@ -61,7 +60,7 @@ public class FavouriteHelper {
     }
 
     public long insert(long idJSon, boolean isMovie) {
-        final int isMovieIndicator = isMovie? 1:0;
+        int isMovieIndicator = isMovie? 1:0;
         ContentValues movieContent = new ContentValues();
         movieContent.put(idJSONColumn, idJSon);
         movieContent.put(isMovieColumn,isMovieIndicator);
@@ -69,8 +68,8 @@ public class FavouriteHelper {
     }
 
     public boolean isFavourite(long id, boolean isMovie) {
-        final int isMovieIndicator = isMovie? 1:0;
-        final String selection = idJSONColumn + " = '"+ id + "'" + " AND " + isMovieColumn + "= '" + isMovieIndicator +"'";
+        int isMovieIndicator = isMovie? 1:0;
+        String selection = idJSONColumn + " = '"+ id + "'" + " AND " + isMovieColumn + "= '" + isMovieIndicator +"'";
         Cursor cursor = database.query(TABLE_NAME, null, selection,null, null, null, null);
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
