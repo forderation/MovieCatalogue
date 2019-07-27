@@ -1,4 +1,4 @@
-package com.example.MovieCatalogue.CustomView;
+package com.example.moviecatalogue.customView;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,7 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 
-import com.example.MovieCatalogue.R;
+import com.example.moviecatalogue.R;
 
 import static android.view.Gravity.CENTER;
 

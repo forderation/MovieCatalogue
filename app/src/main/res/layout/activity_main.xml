@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.example.MovieCatalogue.CustomView.CustomEdtText
+        <com.example.moviecatalogue.customView.CustomEdtText
             android:id="@+id/edit_text"
             android:layout_width="0dp"
             android:textColor="@color/colorAccentSecondary"
@@ -27,7 +27,7 @@
             android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_weight="1" />
 
-        <com.example.MovieCatalogue.CustomView.CustomButton
+        <com.example.moviecatalogue.customView.CustomButton
             android:id="@+id/search_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

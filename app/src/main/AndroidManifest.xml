@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.MovieCatalogue">
+    package="com.example.moviecatalogue">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,21 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.example.MovieCatalogue.TVDetailActivity"
-            android:parentActivityName="com.example.MovieCatalogue.MainActivity"
+            android:name="com.example.moviecatalogue.TVDetailActivity"
+            android:parentActivityName="com.example.moviecatalogue.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.MovieCatalogue.MainActivity" /></activity>
+                android:value="com.example.moviecatalogue.MainActivity" /></activity>
         <activity
-            android:name="com.example.MovieCatalogue.MovieDetailActivity"
-            android:parentActivityName="com.example.MovieCatalogue.MainActivity"
+            android:name="com.example.moviecatalogue.MovieDetailActivity"
+            android:parentActivityName="com.example.moviecatalogue.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.MovieCatalogue.MainActivity" />
+                android:value="com.example.moviecatalogue.MainActivity" />
         </activity>
-        <activity android:name="com.example.MovieCatalogue.MainActivity">
+        <activity android:name="com.example.moviecatalogue.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

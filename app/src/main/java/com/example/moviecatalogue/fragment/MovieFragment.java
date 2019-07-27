@@ -1,4 +1,4 @@
-package com.example.MovieCatalogue.Fragment;
+package com.example.moviecatalogue.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,9 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.MovieCatalogue.Adapter.MovieAdapter;
-import com.example.MovieCatalogue.PlainOldJavaObject.Movie;
-import com.example.MovieCatalogue.R;
+import com.example.moviecatalogue.adapter.MovieAdapter;
+import com.example.moviecatalogue.model.Movie;
+import com.example.moviecatalogue.R;
 
 import java.util.ArrayList;
 

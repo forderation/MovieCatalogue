@@ -1,4 +1,4 @@
-package com.example.MovieCatalogue.Database;
+package com.example.moviecatalogue.databaseLocal;
 import android.provider.BaseColumns;
 
 public class DatabaseContract {

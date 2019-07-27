@@ -1,4 +1,4 @@
-package com.example.MovieCatalogue;
+package com.example.moviecatalogue;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,9 +16,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.MovieCatalogue.Database.FavouriteHelper;
-import com.example.MovieCatalogue.PlainOldJavaObject.Movie;
-import com.example.MovieCatalogue.PlainOldJavaObject.TVShow;
+import com.example.moviecatalogue.databaseLocal.FavouriteHelper;
+import com.example.moviecatalogue.model.Movie;
+import com.example.moviecatalogue.model.TVShow;
 
 import java.util.Objects;
 

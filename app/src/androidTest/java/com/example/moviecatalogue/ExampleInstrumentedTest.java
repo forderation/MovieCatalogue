@@ -1,4 +1,4 @@
-package com.example.MovieCatalogue;
+package com.example.moviecatalogue;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

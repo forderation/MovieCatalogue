@@ -1,4 +1,4 @@
-package com.example.MovieCatalogue;
+package com.example.moviecatalogue;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -19,22 +19,21 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.MovieCatalogue.CustomView.CustomButton;
-import com.example.MovieCatalogue.CustomView.CustomEdtText;
-import com.example.MovieCatalogue.Database.FavouriteHelper;
-import com.example.MovieCatalogue.Fragment.FavouriteFragment;
-import com.example.MovieCatalogue.Fragment.MovieFragment;
-import com.example.MovieCatalogue.Fragment.TVShowFragment;
-import com.example.MovieCatalogue.PlainOldJavaObject.Movie;
-import com.example.MovieCatalogue.PlainOldJavaObject.TVShow;
-import com.example.MovieCatalogue.ViewModel.MovieViewModel;
-import com.example.MovieCatalogue.ViewModel.TVShowViewModel;
+import com.example.moviecatalogue.customView.CustomButton;
+import com.example.moviecatalogue.customView.CustomEdtText;
+import com.example.moviecatalogue.databaseLocal.FavouriteHelper;
+import com.example.moviecatalogue.fragment.FavouriteFragment;
+import com.example.moviecatalogue.fragment.MovieFragment;
+import com.example.moviecatalogue.fragment.TVShowFragment;
+import com.example.moviecatalogue.model.Movie;
+import com.example.moviecatalogue.model.TVShow;
+import com.example.moviecatalogue.viewModel.MovieViewModel;
+import com.example.moviecatalogue.viewModel.TVShowViewModel;
 
 import java.util.ArrayList;
 import java.util.Locale;

@@ -1,4 +1,4 @@
-package com.example.MovieCatalogue.CustomView;
+package com.example.moviecatalogue.customView;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -11,7 +11,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.example.MovieCatalogue.R;
+import com.example.moviecatalogue.R;
 
 public class CustomEdtText extends AppCompatEditText {
 
