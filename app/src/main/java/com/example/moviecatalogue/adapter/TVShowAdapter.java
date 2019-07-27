@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -55,7 +57,9 @@ public class TVShowAdapter extends RecyclerView.Adapter<TVShowAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_grid_tv,
                 viewGroup, false);
-        return new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view);
+        viewHolder.rvLayout.setVisibility(View.INVISIBLE);
+        return viewHolder;
     }
 
     @Override
@@ -89,6 +93,29 @@ public class TVShowAdapter extends RecyclerView.Adapter<TVShowAdapter.ViewHolder
                 context.startActivity(intent, options.toBundle());
             }
         });
+    }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull final ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        AlphaAnimation alphaAnim = new AlphaAnimation(0.0f,1.0f);
+        alphaAnim.setDuration(1500);
+        alphaAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                holder.rvLayout.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        holder.rvLayout.startAnimation(alphaAnim);
     }
 
     @Override
