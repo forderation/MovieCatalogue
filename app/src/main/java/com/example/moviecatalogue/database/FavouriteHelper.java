@@ -1,4 +1,4 @@
-package com.example.moviecatalogue.databaseLocal;
+package com.example.moviecatalogue.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,9 +11,9 @@ import com.example.moviecatalogue.model.TVShow;
 
 import java.util.ArrayList;
 
-import static com.example.moviecatalogue.databaseLocal.DatabaseContract.MovieColumns._ID;
-import static com.example.moviecatalogue.databaseLocal.DatabaseContract.MovieColumns.idJSON;
-import static com.example.moviecatalogue.databaseLocal.DatabaseContract.MovieColumns.isMovie;
+import static com.example.moviecatalogue.database.DatabaseContract.MovieColumns._ID;
+import static com.example.moviecatalogue.database.DatabaseContract.MovieColumns.idJSON;
+import static com.example.moviecatalogue.database.DatabaseContract.MovieColumns.isMovie;
 
 public class FavouriteHelper {
     private static final String TABLE_NAME = DatabaseContract.TABLE_MOVIE;

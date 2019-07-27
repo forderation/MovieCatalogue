@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +9,7 @@
     android:background="@color/colorPrimaryDark"
     tools:showIn="@layout/activity_movie_detail">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -50,7 +50,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <TextView
-            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/tv_release_date"
             android:layout_width="0dp"
             android:transitionName="release_date"
@@ -63,7 +62,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
         <TextView
-            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/tv_adult"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -76,7 +74,6 @@
             app:layout_constraintTop_toBottomOf="@+id/image_poster" />
 
         <TextView
-            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/tv_overview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -89,7 +86,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
         <TextView
-            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/tv_original_language"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -102,7 +98,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_overview" />
 
         <TextView
-            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/tv_vote"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -115,7 +110,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_original_language" />
 
         <TextView
-            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -125,7 +119,6 @@
             app:layout_constraintTop_toTopOf="@+id/image_poster" />
 
         <TextView
-            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -135,7 +128,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
         <TextView
-            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -145,7 +137,6 @@
             app:layout_constraintTop_toBottomOf="@+id/image_poster" />
 
         <TextView
-            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -157,7 +148,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_adult" />
 
         <TextView
-            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/textView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -167,7 +157,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_overview" />
 
         <TextView
-            android:textColor="@color/colorAccentSecondary"
             android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -176,5 +165,5 @@
             app:layout_constraintStart_toStartOf="@+id/textView15"
             app:layout_constraintTop_toBottomOf="@+id/tv_original_language" />
 
-    </android.support.constraint.ConstraintLayout>
-</android.support.v4.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
