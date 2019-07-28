@@ -1,7 +1,10 @@
 package com.example.moviecatalogue;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.moviecatalogue.database.FavouriteHelper;
+import com.example.moviecatalogue.database.DatabaseContract;
 import com.example.moviecatalogue.model.Movie;
 import com.example.moviecatalogue.model.TVShow;
 import com.google.android.material.appbar.AppBarLayout;
@@ -25,15 +28,16 @@ import java.util.Objects;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
+import static com.example.moviecatalogue.database.DatabaseContract.TVShowColumns.CONTENT_URI_TV;
+
 public class TVDetailActivity extends AppCompatActivity {
     public static final String TAG_DETAIL_TV = "tag_detail_tv";
     boolean isActionTrash = false;
     FloatingActionButton fab;
     private Menu menu;
-    private FavouriteHelper favouriteHelper;
     private SharedPreferences sharedPref;
     private TVShow tvShow;
-
+    private Uri uri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +57,6 @@ public class TVDetailActivity extends AppCompatActivity {
         tvOriLang = findViewById(R.id.tv_original_language);
         imgPoster = findViewById(R.id.image_poster);
         imgBackground = findViewById(R.id.expanded_image);
-        favouriteHelper = FavouriteHelper.getInstance(getApplicationContext());
-        favouriteHelper.open();
         if (tvShow != null) {
             Objects.requireNonNull(getSupportActionBar()).setTitle(tvShow.getName());
             tvName.setText(tvShow.getName());
@@ -72,9 +74,12 @@ public class TVDetailActivity extends AppCompatActivity {
                     .load(Movie.PATH_IMG + tvShow.getBackdropPath())
                     .apply(new RequestOptions().centerCrop())
                     .into(imgBackground);
-            if (favouriteHelper.isTVShowFavourites(tvShow.getId())) {
+            uri = Uri.parse(CONTENT_URI_TV +"/"+tvShow.getId());
+            Cursor cursor = getContentResolver().query(uri,null,null,null,null);
+            if (cursor != null && cursor.getCount()>0) {
                 isActionTrash = true;
                 fab.setImageResource(R.drawable.ic_delete_black_24dp);
+                cursor.close();
             }
         }
         this.sharedPref = this.getSharedPreferences(getString(R.string.key_preference), Context.MODE_PRIVATE);
@@ -143,7 +148,7 @@ public class TVDetailActivity extends AppCompatActivity {
         editor.putBoolean(getString(R.string.key_favourite), true);
         editor.apply();
         if (isActionTrash) {
-            long result = favouriteHelper.deleteFavourite(tvShow.getId());
+            int result = getContentResolver().delete(uri,null,null);
             if (result > 0) {
                 isActionTrash = false;
                 fab.setImageResource(R.drawable.ic_favorite_black_24dp);
@@ -156,18 +161,23 @@ public class TVDetailActivity extends AppCompatActivity {
                         .show();
             }
         } else {
-            long result = favouriteHelper.insert(tvShow);
-            if (result > 0) {
-                isActionTrash = true;
-                fab.setImageResource(R.drawable.ic_delete_black_24dp);
-                MenuItem itemOption = menu.findItem(R.id.action_info);
-                itemOption.setIcon(getDrawable(R.drawable.ic_delete_black_24dp));
-                Snackbar.make(this.findViewById(android.R.id.content), getString(R.string.succes_add_favourite), Snackbar.LENGTH_SHORT)
-                        .show();
-            } else {
-                Snackbar.make(this.findViewById(android.R.id.content), getString(R.string.fail_change_stat), Snackbar.LENGTH_SHORT)
-                        .show();
-            }
+            ContentValues values = new ContentValues();
+            values.put(DatabaseContract.TVShowColumns.idJSON,tvShow.getId());
+            values.put(DatabaseContract.TVShowColumns.first_air_date,tvShow.getFirstAirDate());
+            values.put(DatabaseContract.TVShowColumns.backdrop_path,tvShow.getBackdropPath());
+            values.put(DatabaseContract.TVShowColumns.poster_path,tvShow.getPosterPath());
+            values.put(DatabaseContract.TVShowColumns.vote_average,tvShow.getVoteAverage());
+            values.put(DatabaseContract.TVShowColumns.name,tvShow.getName());
+            values.put(DatabaseContract.TVShowColumns.original_language,tvShow.getOriginalLanguage());
+            values.put(DatabaseContract.TVShowColumns.original_name,tvShow.getOriginalName());
+            values.put(DatabaseContract.TVShowColumns.overview,tvShow.getOverview());
+            getContentResolver().insert(CONTENT_URI_TV,values);
+            isActionTrash = true;
+            fab.setImageResource(R.drawable.ic_delete_black_24dp);
+            MenuItem itemOption = menu.findItem(R.id.action_info);
+            itemOption.setIcon(getDrawable(R.drawable.ic_delete_black_24dp));
+            Snackbar.make(this.findViewById(android.R.id.content), getString(R.string.succes_add_favourite), Snackbar.LENGTH_SHORT)
+                    .show();
         }
     }
 }

@@ -24,10 +24,6 @@ public class MovieViewModel extends ViewModel {
     private ArrayList<Movie> listItems = new ArrayList<>();
     private MutableLiveData<ArrayList<Movie>> listMovies = new MutableLiveData<>();
 
-    private ArrayList<Movie> listItemsFavourite = new ArrayList<>();
-    private MutableLiveData<ArrayList<Movie>> listMoviesFavourite = new MutableLiveData<>();
-
-
     public void setMovie(final Context context) {
         final AsyncHttpClient client = new AsyncHttpClient();
         String currentLocale = Locale.getDefault().getLanguage();
@@ -94,44 +90,6 @@ public class MovieViewModel extends ViewModel {
                 client.cancelAllRequests(true);
             }
         });
-    }
-
-    public void setFavouriteMovie(final Context context, ArrayList<Long> idJSON) {
-        final AsyncHttpClient client = new AsyncHttpClient();
-        String currentLocale = Locale.getDefault().getLanguage();
-        if (currentLocale.compareToIgnoreCase("in") == 0) {
-            currentLocale = "id";
-        }
-        listItemsFavourite.clear();
-        for(long id:idJSON){
-            final String url = "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + API_KEY + "&language=" + currentLocale;
-            client.setResponseTimeout(5000);
-            client.get(url, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    try {
-                        String response = new String(responseBody);
-                        JSONObject movieObject = new JSONObject(response);
-                        Movie movie = new Movie(movieObject);
-                        listItemsFavourite.add(movie);
-                        listMoviesFavourite.postValue(listItemsFavourite);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(context, "error data not found : " + statusCode, Toast.LENGTH_SHORT).show();
-                    client.cancelAllRequests(true);
-                }
-            });
-        }
-    }
-
-
-    public LiveData<ArrayList<Movie>> getMoviesFavourites() {
-        return listMoviesFavourite;
     }
 
     public LiveData<ArrayList<Movie>> getMovies() {

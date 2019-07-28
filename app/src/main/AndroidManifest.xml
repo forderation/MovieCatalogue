@@ -3,7 +3,12 @@
     package="com.example.moviecatalogue">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <permission
+        android:name="com.forderation.moviecatalogue.favourite.READ_DATABASE"
+        android:protectionLevel="normal"/>
+    <permission
+        android:name="com.forderation.moviecatalogue.favourite.WRITE_DATABASE"
+        android:protectionLevel="normal"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -33,6 +38,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.forderation.moviecatalogue.favourite"
+            android:name=".provider.FavMovieProvider"
+            android:exported="true"
+            android:readPermission="com.forderation.moviecatalogue.favourite.READ_DATABASE"
+            android:writePermission="com.forderation.moviecatalogue.favourite.WRITE_DATABASE"/>
     </application>
 
 </manifest>

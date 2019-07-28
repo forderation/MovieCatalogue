@@ -3,6 +3,7 @@ package com.example.moviecatalogue;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
@@ -15,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -23,7 +23,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.moviecatalogue.database.FavouriteHelper;
+import com.example.moviecatalogue.database.DatabaseContract;
 import com.example.moviecatalogue.fragment.FavouriteFragment;
 import com.example.moviecatalogue.fragment.MovieFragment;
 import com.example.moviecatalogue.fragment.TVShowFragment;
@@ -50,16 +50,13 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG_STATE_MENU = "tag_state_menu";
     //data untuk ditampilkan pada UI
     ArrayList<Movie> listMovies = new ArrayList<>();
-    ArrayList<Movie> listFavouriteMovies = new ArrayList<>();
-    ArrayList<Long> listIdFavMovie = new ArrayList<>();
     ArrayList<TVShow> listTVShows = new ArrayList<>();
+
+    ArrayList<Movie> listFavouriteMovies = new ArrayList<>();
     ArrayList<TVShow> listFavouriteTV = new ArrayList<>();
-    ArrayList<Long> listIdFavTV = new ArrayList<>();
     //View Model Arch Lifecycle
     MovieViewModel movieViewModel;
     TVShowViewModel tvShowViewModel;
-    //database helper
-    FavouriteHelper favouriteHelper;
     //value untuk menyimpan state konfig bahasa
     private String CONFIG_LOCALE = "";
     //komponen fragment
@@ -127,32 +124,6 @@ public class MainActivity extends AppCompatActivity {
                 listTVShows.addAll(tvShows);
                 if (tvShowFragment != null) {
                     tvShowFragment.setListTVShows(listTVShows);
-                }
-                showLoading(false);
-            }
-        }
-    };
-    private Observer<ArrayList<Movie>> getFavouritesMovies = new Observer<ArrayList<Movie>>() {
-        @Override
-        public void onChanged(@Nullable ArrayList<Movie> movies) {
-            if (movies != null) {
-                listFavouriteMovies.clear();
-                listFavouriteMovies.addAll(movies);
-                if (favouriteFragment != null) {
-                    favouriteFragment.setListFavouriteMovies(listFavouriteMovies);
-                }
-                showLoading(false);
-            }
-        }
-    };
-    private Observer<ArrayList<TVShow>> getFavouritesTV = new Observer<ArrayList<TVShow>>() {
-        @Override
-        public void onChanged(@Nullable ArrayList<TVShow> tvShows) {
-            if (tvShows != null) {
-                listFavouriteTV.clear();
-                listFavouriteTV.addAll(tvShows);
-                if (favouriteFragment != null) {
-                    favouriteFragment.setListFavouriteTV(listFavouriteTV);
                 }
                 showLoading(false);
             }
@@ -261,16 +232,13 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         movieViewModel.getMovies().observe(this, getMovies);
-        movieViewModel.getMoviesFavourites().observe(this, getFavouritesMovies);
         tvShowViewModel = ViewModelProviders.of(this).get(TVShowViewModel.class);
-        tvShowViewModel.getTVShowsFavourite().observe(this, getFavouritesTV);
         tvShowViewModel.getTVShows().observe(this, getTVShows);
         CONFIG_LOCALE = Locale.getDefault().getLanguage();
-        reloadFavouriteData();
         if (savedInstanceState == null) {
+            reloadFavouriteData();
             createDataTVShows();
             createDataMovie();
-            createDataFavourite();
         } else {
             listMovies = savedInstanceState.getParcelableArrayList(TAG_LIST_MOVIES);
             listTVShows = savedInstanceState.getParcelableArrayList(TAG_LIST_TV);
@@ -284,7 +252,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        favouriteHelper.close();
         super.onDestroy();
     }
 
@@ -295,7 +262,6 @@ public class MainActivity extends AppCompatActivity {
         boolean isFavouriteChange = sharedPref.getBoolean(getString(R.string.key_favourite), false);
         if (isFavouriteChange) {
             reloadFavouriteData();
-            createDataFavourite();
             Snackbar.make(findViewById(android.R.id.content), R.string.update_db, Snackbar.LENGTH_SHORT)
                     .show();
             SharedPreferences.Editor editor = sharedPref.edit();
@@ -322,12 +288,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void reloadFavouriteData() {
-        favouriteHelper = FavouriteHelper.getInstance(getApplicationContext());
-        favouriteHelper.open();
-        listIdFavMovie.clear();
-        listIdFavMovie.addAll(favouriteHelper.getMovieFavourites());
-        listIdFavTV.clear();
-        listIdFavTV.addAll(favouriteHelper.getTVShowFavourite());
+        listFavouriteMovies.clear();
+        listFavouriteMovies.addAll(getFavMovieFromContentProvider());
+        listFavouriteTV.clear();
+        listFavouriteTV.addAll(getFavTVShowFromContentProvider());
+        if(favouriteFragment!=null){
+            favouriteFragment.setListFavouriteMovies(listFavouriteMovies);
+            favouriteFragment.setListFavouriteTV(listFavouriteTV);
+        }
     }
 
     @Override
@@ -399,15 +367,38 @@ public class MainActivity extends AppCompatActivity {
         showLoading(true);
     }
 
-    public void createDataFavourite() {
-        movieViewModel.setFavouriteMovie(this, listIdFavMovie);
-        tvShowViewModel.setFavouriteMovie(this, listIdFavTV);
-        showLoading(true);
+    private ArrayList<Movie> getFavMovieFromContentProvider(){
+        Cursor cursor = getContentResolver().query(
+                DatabaseContract.MovieColumns.CONTENT_URI_MOVIE
+        ,null,null,null,null,null);
+        ArrayList<Movie> listFromContentProvider = new ArrayList<>();
+        if(cursor!=null && cursor.getCount()>0){
+            cursor.moveToFirst();
+            Movie movie;
+            do{
+                movie = new Movie(cursor);
+                listFromContentProvider.add(movie);
+                cursor.moveToNext();
+            }while (!cursor.isAfterLast());
+        }
+        return listFromContentProvider;
     }
 
-    public void createDataTVShows() {
-        tvShowViewModel.setTVShows(this);
-        showLoading(true);
+    private ArrayList<TVShow> getFavTVShowFromContentProvider(){
+        Cursor cursor = getContentResolver().query(
+                DatabaseContract.TVShowColumns.CONTENT_URI_TV
+                ,null,null,null,null,null);
+        ArrayList<TVShow> listFromContentProvider = new ArrayList<>();
+        if(cursor!=null && cursor.getCount()>0){
+            cursor.moveToFirst();
+            TVShow tvShow;
+            do{
+                tvShow = new TVShow(cursor);
+                listFromContentProvider.add(tvShow);
+                cursor.moveToNext();
+            }while (!cursor.isAfterLast());
+        }
+        return listFromContentProvider;
     }
 
     @Override
@@ -424,6 +415,11 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    public void createDataTVShows() {
+        tvShowViewModel.setTVShows(this);
+        showLoading(true);
     }
 }
 

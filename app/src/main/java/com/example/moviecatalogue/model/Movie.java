@@ -1,10 +1,13 @@
 package com.example.moviecatalogue.model;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.json.JSONObject;
+import com.example.moviecatalogue.database.DatabaseContract;
 
+import org.json.JSONObject;
+import static com.example.moviecatalogue.database.DatabaseContract.MovieColumns.*;
 public class Movie implements Parcelable, Comparable {
     public static final String PATH_IMG = "https://image.tmdb.org/t/p/w500";
     public static final String SMALL_IMG = "https://image.tmdb.org/t/p/w92";
@@ -26,6 +29,18 @@ public class Movie implements Parcelable, Comparable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Movie(Cursor cursor){
+        setId(cursor.getLong(cursor.getColumnIndexOrThrow(idJSON)));
+        setAdult(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.MovieColumns.adult))));
+        setBackdropPath(cursor.getString(cursor.getColumnIndexOrThrow(backdrop_path)));
+        setOriginalLanguage(cursor.getString(cursor.getColumnIndexOrThrow(original_language)));
+        setOriginalTitle(cursor.getString(cursor.getColumnIndexOrThrow(original_title)));
+        setOverview(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.MovieColumns.overview)));
+        setReleaseDate(cursor.getString(cursor.getColumnIndexOrThrow(release_date)));
+        setPosterPath(cursor.getString(cursor.getColumnIndexOrThrow(poster_path)));
+        setVoteAverage(cursor.getString(cursor.getColumnIndexOrThrow(vote_average)));
     }
 
     protected Movie(Parcel in) {

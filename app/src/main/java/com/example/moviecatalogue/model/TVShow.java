@@ -1,10 +1,13 @@
 package com.example.moviecatalogue.model;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.json.JSONObject;
+import com.example.moviecatalogue.database.DatabaseContract;
 
+import org.json.JSONObject;
+import static com.example.moviecatalogue.database.DatabaseContract.TVShowColumns.*;
 public class TVShow implements Parcelable,Comparable {
     public static final Creator<TVShow> CREATOR = new Creator<TVShow>() {
         @Override
@@ -34,6 +37,18 @@ public class TVShow implements Parcelable,Comparable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public TVShow(Cursor cursor){
+        setId(cursor.getLong(cursor.getColumnIndexOrThrow(idJSON)));
+        setBackdropPath(cursor.getString(cursor.getColumnIndexOrThrow(backdrop_path)));
+        setFirstAirDate(cursor.getString(cursor.getColumnIndexOrThrow(first_air_date)));
+        setName(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.TVShowColumns.name)));
+        setOriginalLanguage(cursor.getString(cursor.getColumnIndexOrThrow(original_language)));
+        setOriginalName(cursor.getString(cursor.getColumnIndexOrThrow(original_name)));
+        setVoteAverage(cursor.getString(cursor.getColumnIndexOrThrow(vote_average)));
+        setPosterPath(cursor.getString(cursor.getColumnIndexOrThrow(poster_path)));
+        setOverview(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.TVShowColumns.overview)));
     }
 
     protected TVShow(Parcel in) {

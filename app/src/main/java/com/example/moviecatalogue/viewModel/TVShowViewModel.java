@@ -1,16 +1,13 @@
 package com.example.moviecatalogue.viewModel;
 import android.content.Context;
 import android.widget.Toast;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.moviecatalogue.BuildConfig;
 import com.example.moviecatalogue.model.TVShow;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -24,14 +21,8 @@ public class TVShowViewModel extends ViewModel {
     private ArrayList<TVShow> listItems = new ArrayList<>();
     private MutableLiveData<ArrayList<TVShow>> listTVShows = new MutableLiveData<>();
 
-    private ArrayList<TVShow> listItemsFavourite = new ArrayList<>();
-    private MutableLiveData<ArrayList<TVShow>> listTVShowsFavourite = new MutableLiveData<>();
-
     public LiveData<ArrayList<TVShow>> getTVShows() {
         return listTVShows;
-    }
-    public LiveData<ArrayList<TVShow>> getTVShowsFavourite() {
-        return listTVShowsFavourite;
     }
     public void setTVShows(final Context context) {
         final AsyncHttpClient client = new AsyncHttpClient();
@@ -101,38 +92,5 @@ public class TVShowViewModel extends ViewModel {
                 client.cancelAllRequests(true);
             }
         });
-    }
-
-    public void setFavouriteMovie(final Context context, ArrayList<Long> idJSON) {
-        final AsyncHttpClient client = new AsyncHttpClient();
-        String currentLocale = Locale.getDefault().getLanguage();
-        if (currentLocale.compareToIgnoreCase("in") == 0) {
-            currentLocale = "id";
-        }
-        listItemsFavourite.clear();
-        for(long id:idJSON){
-            final String url = "https://api.themoviedb.org/3/tv/" + id + "?api_key=" + API_KEY + "&language=" + currentLocale;
-            client.setResponseTimeout(5000);
-            client.get(url, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    try {
-                        String response = new String(responseBody);
-                        JSONObject tvObject = new JSONObject(response);
-                        TVShow tvShow = new TVShow(tvObject);
-                        listItemsFavourite.add(tvShow);
-                        listTVShowsFavourite.postValue(listItemsFavourite);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(context, "error data not found : " + statusCode, Toast.LENGTH_SHORT).show();
-                    client.cancelAllRequests(true);
-                }
-            });
-        }
     }
 }
