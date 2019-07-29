@@ -1,9 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.moviecatalogue.ReminderActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:contentDescription="@string/nav_header_desc"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/banner_notification" />
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:drawableStart="@drawable/ic_notifications_white_24dp"
+        android:background="#8000"
+        android:padding="@dimen/activity_vertical_margin"
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:text="@string/menu_remainder"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="#8000"
+        android:padding="@dimen/activity_vertical_margin"
+        android:text="Setting remainder notification"
+        android:textColor="@color/colorAccent"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            app:cardCornerRadius="6dp"
+            app:cardBackgroundColor="@color/colorAccent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_margin="4dp"
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimary"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:id="@+id/title_release"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/colorAccent"
+                    android:text="Release Remainder"
+                    android:textSize="18sp"
+                    style="bold"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:layout_below="@id/title_release"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="Remainder showing the movie that released today"
+                    android:textSize="12sp"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content" />
+                <Switch
+                    android:theme="@style/SCBSwitch"
+                    android:id="@+id/switch_release"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            app:cardCornerRadius="6dp"
+            app:cardBackgroundColor="@color/colorAccent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_margin="4dp"
+                android:id="@+id/relative_layout"
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimary"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:id="@+id/title_daily"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/colorAccent"
+                    android:text="Daily Remainder"
+                    android:textSize="18sp"
+                    style="bold"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:layout_below="@id/title_daily"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="Remainder for return to appp"
+                    android:textSize="12sp"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content" />
+                <Switch
+                    android:id="@+id/switch_daily"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:theme="@style/SCBSwitch"
+                    />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,7 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ReminderActivity"></activity>
-
+        <receiver android:name=".receiver.NotificationRemainder"
+            android:exported="true"
+            android:enabled="true"/>
         <receiver android:name=".widget.FavMovieWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
