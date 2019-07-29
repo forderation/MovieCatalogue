@@ -17,7 +17,7 @@ import com.example.moviecatalogue.database.FavMovieHelper;
 import com.example.moviecatalogue.database.FavTVHelper;
 
 
-public class FavMovieProvider extends ContentProvider {
+public class FavouriteProvider extends ContentProvider {
     private static final int TABLE_MOVIE = 1;
     private static final int TABLE_MOVIE_WITH_ID = 2;
     private static final int TABLE_TV = 3;

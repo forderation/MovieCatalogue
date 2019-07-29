@@ -16,10 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -32,6 +36,7 @@ import com.example.moviecatalogue.model.TVShow;
 import com.example.moviecatalogue.viewModel.MovieViewModel;
 import com.example.moviecatalogue.viewModel.TVShowViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -40,7 +45,7 @@ import java.util.Objects;
 
 import static android.transition.TransitionManager.beginDelayedTransition;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     //state penyimpanan bundle
     public static final String TAG_LIST_MOVIES = "tag_list_movies";
     public static final String TAG_LIST_TV = "tag_list_tv";
@@ -64,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private TVShowFragment tvShowFragment;
     private FavouriteFragment favouriteFragment;
     //komponen main activity
-    private BottomNavigationView navigationView;
+    private BottomNavigationView bottomNavView;
     private ProgressBar progressBar;
     private ConstraintLayout container;
     private ConstraintSet containerSet;
@@ -163,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onClose() {
                 searchView.setLayoutParams(widthWrapContent);
                 searchHint.setVisibility(View.VISIBLE);
-                if(!searchView.getQuery().toString().isEmpty()){
+                if (!searchView.getQuery().toString().isEmpty()) {
                     switch (stateMenu) {
                         case R.id.movie_nav:
                             movieViewModel.setMovie(getApplication());
@@ -219,9 +224,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
         widthMatchParent = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         widthWrapContent = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        navigationView = findViewById(R.id.navigation);
+        bottomNavView = findViewById(R.id.navigation);
         progressBar = findViewById(R.id.progress_bar);
         container = findViewById(R.id.container);
         searchLayout = findViewById(R.id.search_layout);
@@ -229,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
         searchHint = findViewById(R.id.search_hint);
         setSearchViewSetting();
         containerSet = new ConstraintSet();
-        navigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         movieViewModel.getMovies().observe(this, getMovies);
         tvShowViewModel = ViewModelProviders.of(this).get(TVShowViewModel.class);
@@ -246,13 +260,57 @@ public class MainActivity extends AppCompatActivity {
             listFavouriteTV = savedInstanceState.getParcelableArrayList(TAG_LIST_FAV_TV);
             stateMenu = savedInstanceState.getInt(TAG_STATE_MENU);
         }
-        navigationView.setSelectedItemId(stateMenu);
+        bottomNavView.setSelectedItemId(stateMenu);
     }
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_change_settings) {
+            Intent mIntent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
+            startActivity(mIntent);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_tools) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
@@ -284,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
         reloadFavouriteData();
-        navigationView.setSelectedItemId(stateMenu);
+        bottomNavView.setSelectedItemId(stateMenu);
     }
 
     public void reloadFavouriteData() {
@@ -292,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
         listFavouriteMovies.addAll(getFavMovieFromContentProvider());
         listFavouriteTV.clear();
         listFavouriteTV.addAll(getFavTVShowFromContentProvider());
-        if(favouriteFragment!=null){
+        if (favouriteFragment != null) {
             favouriteFragment.setListFavouriteMovies(listFavouriteMovies);
             favouriteFragment.setListFavouriteTV(listFavouriteTV);
         }
@@ -367,54 +425,38 @@ public class MainActivity extends AppCompatActivity {
         showLoading(true);
     }
 
-    private ArrayList<Movie> getFavMovieFromContentProvider(){
+    private ArrayList<Movie> getFavMovieFromContentProvider() {
         Cursor cursor = getContentResolver().query(
                 DatabaseContract.MovieColumns.CONTENT_URI_MOVIE
-        ,null,null,null,null,null);
+                , null, null, null, null, null);
         ArrayList<Movie> listFromContentProvider = new ArrayList<>();
-        if(cursor!=null && cursor.getCount()>0){
+        if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             Movie movie;
-            do{
+            do {
                 movie = new Movie(cursor);
                 listFromContentProvider.add(movie);
                 cursor.moveToNext();
-            }while (!cursor.isAfterLast());
+            } while (!cursor.isAfterLast());
         }
         return listFromContentProvider;
     }
 
-    private ArrayList<TVShow> getFavTVShowFromContentProvider(){
+    private ArrayList<TVShow> getFavTVShowFromContentProvider() {
         Cursor cursor = getContentResolver().query(
                 DatabaseContract.TVShowColumns.CONTENT_URI_TV
-                ,null,null,null,null,null);
+                , null, null, null, null, null);
         ArrayList<TVShow> listFromContentProvider = new ArrayList<>();
-        if(cursor!=null && cursor.getCount()>0){
+        if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             TVShow tvShow;
-            do{
+            do {
                 tvShow = new TVShow(cursor);
                 listFromContentProvider.add(tvShow);
                 cursor.moveToNext();
-            }while (!cursor.isAfterLast());
+            } while (!cursor.isAfterLast());
         }
         return listFromContentProvider;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_change_settings) {
-            Intent mIntent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
-            startActivity(mIntent);
-            return true;
-        }
-        return false;
     }
 
     public void createDataTVShows() {
@@ -422,4 +464,3 @@ public class MainActivity extends AppCompatActivity {
         showLoading(true);
     }
 }
-
