@@ -18,6 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ReminderActivity"></activity>
+
         <receiver android:name=".widget.FavMovieWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -58,9 +60,11 @@
             android:exported="true"
             android:readPermission="com.forderation.moviecatalogue.favourite.READ_DATABASE"
             android:writePermission="com.forderation.moviecatalogue.favourite.WRITE_DATABASE" />
+
         <service
             android:name=".widget.StackWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"
-            android:exported="true"/>
+            android:exported="true"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
+
 </manifest>

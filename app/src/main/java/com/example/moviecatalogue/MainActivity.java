@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private LinearLayout.LayoutParams widthMatchParent;
     private LinearLayout.LayoutParams widthWrapContent;
     private TextView searchHint;
+    private boolean doingSearchMovie = false;
+    private boolean doingSearchTV = false;
     private int stateMenu = R.id.movie_nav;
     /*
      * @method_for = implementasi listener bottom navigasi
@@ -168,17 +170,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public boolean onClose() {
                 searchView.setLayoutParams(widthWrapContent);
                 searchHint.setVisibility(View.VISIBLE);
-                if (!searchView.getQuery().toString().isEmpty()) {
-                    switch (stateMenu) {
-                        case R.id.movie_nav:
+                switch (stateMenu) {
+                    case R.id.movie_nav:
+                        if(doingSearchMovie){
                             movieViewModel.setMovie(getApplication());
-                            break;
-                        case R.id.tv_show_nav:
+                            doingSearchMovie = false;
+                        }
+                        break;
+                    case R.id.tv_show_nav:
+                        if(doingSearchTV){
                             tvShowViewModel.setTVShows(getApplication());
-                            break;
-                        default:
-                            break;
-                    }
+                            doingSearchTV = false;
+                        }
+                        break;
+                    default:
+                        break;
                 }
                 return false;
             }
@@ -200,10 +206,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         case R.id.movie_nav:
                             movieViewModel.setMovie(query, getApplication());
                             showLoading(true);
+                            doingSearchMovie = true;
                             break;
                         case R.id.tv_show_nav:
                             tvShowViewModel.setTVShows(query, getApplication());
                             showLoading(true);
+                            doingSearchTV = true;
                             break;
                         default:
                             Toast.makeText(getApplication(), getString(R.string.search_not_available), Toast.LENGTH_SHORT).show();
@@ -295,16 +303,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_tools) {
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_about) {
 
         }
 
