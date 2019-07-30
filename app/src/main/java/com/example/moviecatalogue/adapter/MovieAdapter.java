@@ -104,7 +104,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 .into(new SimpleTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        viewHolder.rvLayout.setBackground(resource);
+                        if(movie.getPosterPath().isEmpty()){
+                            viewHolder.rvLayout.setBackground(context.getResources().getDrawable(android.R.color.black));
+                        }else{
+                            viewHolder.rvLayout.setBackground(resource);
+                        }
                     }
                 });
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {

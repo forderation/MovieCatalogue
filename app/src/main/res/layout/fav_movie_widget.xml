@@ -33,7 +33,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="@color/colorPrimary"
-        android:text="@string/list_empty_wdiget"
+        android:text="@string/list_empty_widget"
         android:textAlignment="center"
         android:textColor="#ffffff"
         android:textSize="20sp"

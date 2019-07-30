@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +41,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -56,22 +58,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //data untuk ditampilkan pada UI
     ArrayList<Movie> listMovies = new ArrayList<>();
     ArrayList<TVShow> listTVShows = new ArrayList<>();
-
+    ArrayList<Movie> listReleasedNow = new ArrayList<>();
     ArrayList<Movie> listFavouriteMovies = new ArrayList<>();
     ArrayList<TVShow> listFavouriteTV = new ArrayList<>();
     //View Model Arch Lifecycle
     MovieViewModel movieViewModel;
     TVShowViewModel tvShowViewModel;
+    Calendar calendar;
     //value untuk menyimpan state konfig bahasa
     private String CONFIG_LOCALE = "";
     //komponen fragment
     private MovieFragment movieFragment;
+    private MovieFragment nowReleaseFragment;
     private TVShowFragment tvShowFragment;
     private FavouriteFragment favouriteFragment;
     //komponen main activity
     private BottomNavigationView bottomNavView;
     private ProgressBar progressBar;
-    private ConstraintLayout container;
+    private ConstraintLayout rootContainer;
     private ConstraintSet containerSet;
     private LinearLayout searchLayout;
     private SearchView searchView;
@@ -122,6 +126,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     };
+
+    private Observer<ArrayList<Movie>> getReleasedNow = new Observer<ArrayList<Movie>>() {
+        @Override
+        public void onChanged(ArrayList<Movie> movies) {
+            if (movies != null) {
+                //set to adapter
+                listReleasedNow.clear();
+                listReleasedNow.addAll(movies);
+                if (nowReleaseFragment != null) {
+                    nowReleaseFragment.setListMovies(listReleasedNow);
+                }
+                showLoading(false);
+            }
+        }
+    };
+
     private Observer<ArrayList<TVShow>> getTVShows = new Observer<ArrayList<TVShow>>() {
         @Override
         public void onChanged(ArrayList<TVShow> tvShows) {
@@ -138,18 +158,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     };
 
     private void hideSearchLayout() {
-        containerSet.clone(container);
-        containerSet.connect(R.id.container_layout, ConstraintSet.TOP, R.id.container, ConstraintSet.TOP, 16);
-        beginDelayedTransition(container);
-        containerSet.applyTo(container);
+        containerSet.clone(rootContainer);
+        containerSet.connect(R.id.container_fragment, ConstraintSet.TOP, R.id.root_container, ConstraintSet.TOP, 16);
+        beginDelayedTransition(rootContainer);
+        containerSet.applyTo(rootContainer);
         searchLayout.setVisibility(View.INVISIBLE);
     }
 
+    private void pushFragmentLayoutToParent() {
+        hideSearchLayout();
+        bottomNavView.setVisibility(View.INVISIBLE);
+        containerSet.clone(rootContainer);
+        containerSet.connect(R.id.container_fragment, ConstraintSet.BOTTOM, R.id.root_container, ConstraintSet.BOTTOM, 30);
+        beginDelayedTransition(rootContainer);
+        containerSet.applyTo(rootContainer);
+    }
+
+    private void pushFragmentLayoutToBottomNav() {
+        showSearchLayout();
+        containerSet.clone(rootContainer);
+        beginDelayedTransition(rootContainer);
+        bottomNavView.setVisibility(View.VISIBLE);
+        bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        bottomNavView.setSelectedItemId(stateMenu);
+        containerSet.connect(R.id.container_fragment, ConstraintSet.BOTTOM, R.id.navigation, ConstraintSet.TOP, 30);
+        containerSet.applyTo(rootContainer);
+    }
+
     private void showSearchLayout() {
-        containerSet.clone(container);
-        containerSet.connect(R.id.container_layout, ConstraintSet.TOP, R.id.search_layout, ConstraintSet.BOTTOM, 16);
-        beginDelayedTransition(container);
-        containerSet.applyTo(container);
+        containerSet.clone(rootContainer);
+        containerSet.connect(R.id.container_fragment, ConstraintSet.TOP, R.id.search_layout, ConstraintSet.BOTTOM, 16);
+        beginDelayedTransition(rootContainer);
+        containerSet.applyTo(rootContainer);
         searchLayout.setVisibility(View.VISIBLE);
     }
 
@@ -172,13 +212,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 searchHint.setVisibility(View.VISIBLE);
                 switch (stateMenu) {
                     case R.id.movie_nav:
-                        if(doingSearchMovie){
+                        if (doingSearchMovie) {
                             movieViewModel.setMovie(getApplication());
                             doingSearchMovie = false;
                         }
                         break;
                     case R.id.tv_show_nav:
-                        if(doingSearchTV){
+                        if (doingSearchTV) {
                             tvShowViewModel.setTVShows(getApplication());
                             doingSearchTV = false;
                         }
@@ -245,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         widthWrapContent = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         bottomNavView = findViewById(R.id.navigation);
         progressBar = findViewById(R.id.progress_bar);
-        container = findViewById(R.id.container);
+        rootContainer = findViewById(R.id.root_container);
         searchLayout = findViewById(R.id.search_layout);
         searchView = findViewById(R.id.search_view);
         searchHint = findViewById(R.id.search_hint);
@@ -256,11 +296,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         movieViewModel.getMovies().observe(this, getMovies);
         tvShowViewModel = ViewModelProviders.of(this).get(TVShowViewModel.class);
         tvShowViewModel.getTVShows().observe(this, getTVShows);
+        movieViewModel.getNowReleasedMovies().observe(this, getReleasedNow);
         CONFIG_LOCALE = Locale.getDefault().getLanguage();
         if (savedInstanceState == null) {
             reloadFavouriteData();
             createDataTVShows();
             createDataMovie();
+            createDataReleasedNow();
         } else {
             listMovies = savedInstanceState.getParcelableArrayList(TAG_LIST_MOVIES);
             listTVShows = savedInstanceState.getParcelableArrayList(TAG_LIST_TV);
@@ -301,21 +343,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (id == R.id.nav_home) {
-
-        } else if (id == R.id.nav_tools) {
-            Intent intent = new Intent(this,ReminderActivity.class);
+            pushFragmentLayoutToBottomNav();
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+        }
+        else if(id == R.id.nav_released_now){
+            pushFragmentLayoutToParent();
+            showNowReleasedFragment();
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+        }
+        else if (id == R.id.nav_tools) {
+            Intent intent = new Intent(this, ReminderActivity.class);
             startActivity(intent);
+            return false;
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_about) {
 
         }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return false;
+        return true;
     }
 
     @Override
@@ -380,11 +429,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container_layout, movieFragment,
-                        movieFragment.getClass().getSimpleName())
+                .replace(R.id.container_fragment, movieFragment,
+                        movieFragment.getClass().getSimpleName() + "FavouriteMovies")
                 .commit();
         Objects.requireNonNull(getSupportActionBar())
                 .setTitle(getResources().getString(R.string.bar_title_movie));
+    }
+
+    private void showNowReleasedFragment() {
+        if (nowReleaseFragment == null) {
+            nowReleaseFragment = new MovieFragment();
+            nowReleaseFragment.setContext(this);
+            nowReleaseFragment.setListMovies(listReleasedNow);
+        }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container_fragment, nowReleaseFragment,
+                        nowReleaseFragment.getClass().getSimpleName() + "ReleasedNow")
+                .commit();
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getResources().getString(R.string.menu_released_now));
     }
 
     private void showLoading(Boolean state) {
@@ -403,7 +466,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container_layout, tvShowFragment,
+                .replace(R.id.container_fragment, tvShowFragment,
                         tvShowFragment.getClass().getSimpleName())
                 .commit();
         Objects.requireNonNull(getSupportActionBar())
@@ -419,7 +482,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container_layout, favouriteFragment, favouriteFragment.getClass().getSimpleName())
+                .replace(R.id.container_fragment, favouriteFragment, favouriteFragment.getClass().getSimpleName())
                 .commit();
         Objects.requireNonNull(getSupportActionBar())
                 .setTitle(getResources().getString(R.string.bar_title_favourite_movie));
@@ -427,6 +490,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void createDataMovie() {
         movieViewModel.setMovie(this);
+        showLoading(true);
+    }
+
+    public void createDataReleasedNow() {
+        calendar = Calendar.getInstance(Locale.ENGLISH);
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        String currentDate = DateFormat.format("yyyy-MM-dd", calendar).toString();
+        movieViewModel.setMovieReleasedNow(this, currentDate);
         showLoading(true);
     }
 

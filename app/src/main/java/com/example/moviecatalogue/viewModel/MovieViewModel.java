@@ -1,4 +1,5 @@
 package com.example.moviecatalogue.viewModel;
+
 import android.content.Context;
 import android.widget.Toast;
 
@@ -21,8 +22,10 @@ import cz.msebera.android.httpclient.Header;
 
 public class MovieViewModel extends ViewModel {
     private static final String API_KEY = BuildConfig.API_movie_DB;
-    private ArrayList<Movie> listItems = new ArrayList<>();
+    private ArrayList<Movie> listItemsPopular = new ArrayList<>();
+    private ArrayList<Movie> listItemsReleasedNow = new ArrayList<>();
     private MutableLiveData<ArrayList<Movie>> listMovies = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Movie>> listReleasedNow = new MutableLiveData<>();
 
     public void setMovie(final Context context) {
         final AsyncHttpClient client = new AsyncHttpClient();
@@ -38,13 +41,13 @@ public class MovieViewModel extends ViewModel {
                     String response = new String(responseBody);
                     JSONObject listObject = new JSONObject(response);
                     JSONArray resultList = listObject.getJSONArray("results");
-                    listItems.clear();
+                    listItemsPopular.clear();
                     for (int i = 0; i < resultList.length(); i++) {
                         JSONObject movieObject = resultList.getJSONObject(i);
                         Movie movie = new Movie(movieObject);
-                        listItems.add(movie);
+                        listItemsPopular.add(movie);
                     }
-                    listMovies.postValue(listItems);
+                    listMovies.postValue(listItemsPopular);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -58,13 +61,13 @@ public class MovieViewModel extends ViewModel {
         });
     }
 
-    public void setMovie(String query, final Context context){
+    public void setMovie(String query, final Context context) {
         final AsyncHttpClient client = new AsyncHttpClient();
         String currentLocale = Locale.getDefault().getLanguage();
         if (currentLocale.compareToIgnoreCase("in") == 0) {
             currentLocale = "id";
         }
-        final String url = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&query=" + query +"&language=" + currentLocale;
+        final String url = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&query=" + query + "&language=" + currentLocale;
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -72,13 +75,49 @@ public class MovieViewModel extends ViewModel {
                     String response = new String(responseBody);
                     JSONObject listObject = new JSONObject(response);
                     JSONArray resultList = listObject.getJSONArray("results");
-                    listItems.clear();
+                    listItemsPopular.clear();
                     for (int i = 0; i < resultList.length(); i++) {
                         JSONObject movieObject = resultList.getJSONObject(i);
                         Movie movie = new Movie(movieObject);
-                        listItems.add(movie);
+                        listItemsPopular.add(movie);
                     }
-                    listMovies.postValue(listItems);
+                    listMovies.postValue(listItemsPopular);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(context, "error data not found : " + statusCode, Toast.LENGTH_SHORT).show();
+                client.cancelAllRequests(true);
+            }
+        });
+    }
+
+    public void setMovieReleasedNow(final Context context, final String dateNow) {
+        final AsyncHttpClient client = new AsyncHttpClient();
+        String currentLocale = Locale.getDefault().getLanguage();
+        if (currentLocale.compareToIgnoreCase("in") == 0) {
+            currentLocale = "id";
+        }
+        final String url = "https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=" + dateNow + "&api_key=" + BuildConfig.API_movie_DB + "&language=" + currentLocale;
+        client.get(url, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String response = new String(responseBody);
+                    JSONObject listObject = new JSONObject(response);
+                    JSONArray resultList = listObject.getJSONArray("results");
+                    listItemsReleasedNow.clear();
+                    for (int i = 0; i < resultList.length(); i++) {
+                        JSONObject movieObject = resultList.getJSONObject(i);
+                        if(movieObject.getString("release_date").compareTo(dateNow) == 0){
+                            Movie movie = new Movie(movieObject);
+                            listItemsReleasedNow.add(movie);
+                        }
+                    }
+                    listReleasedNow.postValue(listItemsReleasedNow);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -94,5 +133,8 @@ public class MovieViewModel extends ViewModel {
 
     public LiveData<ArrayList<Movie>> getMovies() {
         return listMovies;
+    }
+    public LiveData<ArrayList<Movie>> getNowReleasedMovies() {
+        return listReleasedNow;
     }
 }

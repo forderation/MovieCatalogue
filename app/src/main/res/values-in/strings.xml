@@ -39,4 +39,13 @@
     <string name="search_field">isi dahulu</string>
     <string name="submit_search">Cari</string>
     <string name="search_not_available">Pencarian tidak tersedia untuk halaman ini</string>
+    <string name="search_placeholder">Cari sesuatu disini</string>
+    <string name="nav_header_subtitle">"Jelajahi dunia film dan televisi "</string>
+    <string name="menu_upcoming">Segera Rilis</string>
+    <string name="menu_share">Bagikan</string>
+    <string name="menu_send">Tentang</string>
+    <string name="menu_remainder">Pengingat</string>
+    <string name="menu_home">Beranda</string>
+    <string name="list_empty_widget">Daftar favorit kosong</string>
+    <string name="menu_released_now">Rilis Sekarang</string>
 </resources>
