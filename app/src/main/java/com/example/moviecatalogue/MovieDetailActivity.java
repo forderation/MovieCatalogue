@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,11 +14,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.moviecatalogue.database.DatabaseContract;
 import com.example.moviecatalogue.model.Movie;
 import com.google.android.material.appbar.AppBarLayout;
@@ -56,7 +61,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         ImageView imagePoster = findViewById(R.id.image_poster);
         AppBarLayout appBarLayout = findViewById(R.id.app_bar);
         movie = getIntent().getParcelableExtra(TAG_DETAIL_MOVIE);
-        ImageView expandedImage = findViewById(R.id.expanded_image);
+        final ImageView expandedImage = findViewById(R.id.expanded_image);
         if (movie != null) {
             Objects.requireNonNull(getSupportActionBar()).setTitle(movie.getOriginalTitle());
             tvTitle.setText(movie.getOriginalTitle());
@@ -77,7 +82,12 @@ public class MovieDetailActivity extends AppCompatActivity {
             Glide.with(getApplicationContext())
                     .load(Movie.PATH_IMG + movie.getBackdropPath())
                     .apply(new RequestOptions().centerCrop())
-                    .into(expandedImage);
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            expandedImage.setBackground(resource);
+                        }
+                    });
             uri = Uri.parse(CONTENT_URI_MOVIE +"/"+movie.getId());
             Cursor cursor = getContentResolver().query(uri,null,null,null,null);
             if (cursor != null && cursor.getCount()>0) {

@@ -35,7 +35,7 @@
     <string name="favorite">Favorite</string>
     <string name="key_preference" translatable="false">movie_catalogue_setting</string>
     <string name="key_favourite" translatable="false">is_favourite_changed</string>
-    <string name="key_daily_remainder" translatable="false">daily_reminder_service</string>
+    <string name="key_daily_reminder" translatable="false">daily_reminder_service</string>
     <string name="succes_add_favourite">Success add to Favourite list</string>
     <string name="succes_remove_favourite">Success removed from Favourite list</string>
     <string name="fail_change_stat">Ops something wrong</string>
@@ -54,7 +54,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_upcoming">Upcoming Release</string>
     <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_remainder">Remainder</string>
+    <string name="menu_remainder">Reminder</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">About</string>
     <string name="appwidget_text">EXAMPLE</string>
