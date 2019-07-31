@@ -12,13 +12,9 @@
             android:id="@+id/nav_released_now"
             android:icon="@drawable/ic_local_play_black_24dp"
             android:title="@string/menu_released_now" />
-        <item
-            android:id="@+id/nav_upcoming_release"
-            android:icon="@drawable/ic_access_time_black_24dp"
-            android:title="@string/menu_upcoming" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/communicate">
         <menu>
             <item
                 android:id="@+id/nav_tools"

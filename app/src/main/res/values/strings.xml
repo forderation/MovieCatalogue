@@ -17,9 +17,6 @@
     <string name="title_activity_movie_detail" translatable="false">MovieDetailActivity</string>
     <string name="action_menu_favourite">Add as favourite</string>
     <string name="poster_image">Poster Image</string>
-    <string name="visit_url">Are you sure to visit homepage ?</string>
-    <string name="sure_visit">SURE</string>
-    <string name="url_not_found">Sorry can\'t find homepage :(</string>
     <string name="tv_title">Title:</string>
     <string name="tv_release_date">Release date:</string>
     <string name="tv_18">Content for:</string>
@@ -48,7 +45,6 @@
     <string name="nav_header_subtitle">Explore the world of movie</string>
     <string name="nav_header_desc" translatable="false">Navigation header</string>
     <string name="menu_home">Home</string>
-    <string name="menu_upcoming">Upcoming Release</string>>
     <string name="menu_remainder">Reminder</string>
     <string name="menu_released_now">Released Now</string>
     <string name="menu_share">Share</string>
@@ -56,4 +52,25 @@
     <string name="list_empty_widget">Favourite list has empty</string>
     <string name="navigation_drawer_open" translatable="false">Side menu</string>
     <string name="navigation_drawer_close" translatable="false">Side menu closed</string>
+    <string name="sharing_app">Hey checkout amazing movie database open source at https:github.com/forderation/MovieCatalogue</string>
+    <string name="communicate">Communicate</string>
+    <string name="about_content">Movie DB is a movie catalog and television show application that is based on the API themoviedb.org for the final project of the google developer kejar program and dicoding. the application is still under development you can contribute via git. author: Kharisma Muzaki Ghufron.</string>
+    <string name="google_developer_kejar" translatable="false">google developer kejar</string>
+    <string name="release_today_notify">New released today</string>
+    <string name="new_released_movies">new released movies</string>
+    <string name="list_released_notify">List released today</string>
+    <string name="group_key_notify" translatable="false">group key release today</string>
+    <string name="daily_notify_title">Movie DB Miss You</string>
+    <string name="daily_notify_content">click here to see what\'s new</string>
+    <string name="today_release_notify">Today release</string>
+    <string name="showcase_bottom_nav">Navigation you can explore movie, tv show, or your favourite bookmark</string>
+    <string name="showcase_toolbar">Set your language in right and get application menu in left</string>
+    <string name="showcase_search">Explore and search your movie here</string>
+    <string name="showcase_container_fragment">List item movie you can click it to view details</string>
+    <string name="setting_reminder_notification">Setting reminder notification</string>
+    <string name="release_reminder">Release Reminder</string>
+    <string name="release_reminder_desc">Reminder showing the movie that released today</string>
+    <string name="daily_reminder">Daily Reminder</string>
+    <string name="daily_reminder_desc">Reminder for return to app</string>
+    <string name="dicoding" translatable="false">dicoding</string>
 </resources>

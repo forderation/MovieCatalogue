@@ -18,10 +18,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".AboutActivity"></activity>
         <activity android:name=".ReminderActivity"></activity>
-        <receiver android:name=".receiver.NotificationReminder"
-            android:exported="true"
-            android:enabled="true"/>
+
+        <receiver
+            android:name=".receiver.NotificationReminder"
+            android:enabled="true"
+            android:exported="true" />
         <receiver android:name=".widget.FavMovieWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -36,17 +39,11 @@
             android:name=".TVDetailActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.moviecatalogue.MainActivity" />
         </activity>
         <activity
             android:name=".MovieDetailActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.moviecatalogue.MainActivity" />
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>

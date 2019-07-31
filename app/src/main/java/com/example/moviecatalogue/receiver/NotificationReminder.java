@@ -20,7 +20,6 @@ import androidx.core.content.ContextCompat;
 
 import com.example.moviecatalogue.BuildConfig;
 import com.example.moviecatalogue.MainActivity;
-import com.example.moviecatalogue.MovieDetailActivity;
 import com.example.moviecatalogue.R;
 import com.example.moviecatalogue.model.Movie;
 import com.loopj.android.http.AsyncHttpClient;
@@ -64,8 +63,8 @@ public class NotificationReminder extends BroadcastReceiver {
         String CHANNEL_ID = "Channel_200";
         String CHANNEL_NAME = "Release Today Reminder Channel";
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Intent openDetail = new Intent(context,MovieDetailActivity.class);
-        openDetail.putExtra(MovieDetailActivity.TAG_DETAIL_MOVIE,intent.getParcelableExtra(MovieDetailActivity.TAG_DETAIL_MOVIE));
+        Intent openDetail = new Intent(context,MainActivity.class);
+        openDetail.putExtra(MainActivity.TAG_STATE_NAV_DRAWER,R.id.nav_released_now);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,openDetail,0);
         NotificationCompat.Builder builder;
         Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),R.drawable.ic_launcher_foreground);
@@ -80,17 +79,19 @@ public class NotificationReminder extends BroadcastReceiver {
                     .setVibrate(new long[]{1000,1000,1000,1000,1000})
                     .setSound(alarmSound)
                     .setAutoCancel(true)
-                    .setGroup("group key release today");
+                    .setGroup(context.getResources().getString(R.string.group_key_notify));
         }else{
+            notificationManager.cancelAll();
+            String header = context.getResources().getString(R.string.release_today_notify);
             NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle()
-                    .addLine("New released today " + movies.get(idNotifyToday).getOriginalTitle())
-                    .addLine("New released today " + movies.get(idNotifyToday - 1).getOriginalTitle())
-                    .addLine("New released today " + movies.get(idNotifyToday - 2).getOriginalTitle())
-                    .setBigContentTitle(idNotifyToday + " new release today")
+                    .addLine(header + movies.get(idNotifyToday).getOriginalTitle())
+                    .addLine(header + movies.get(idNotifyToday - 1).getOriginalTitle())
+                    .addLine(header + movies.get(idNotifyToday - 2).getOriginalTitle())
+                    .setBigContentTitle(idNotifyToday + header)
                     .setSummaryText("Movie DB");
             builder = new NotificationCompat.Builder(context,CHANNEL_ID)
-                    .setContentTitle(idNotifyToday + " new released movies")
-                    .setContentText("List released today")
+                    .setContentTitle(idNotifyToday + context.getResources().getString(R.string.new_released_movies))
+                    .setContentText(context.getResources().getString(R.string.list_released_notify))
                     .setSmallIcon(R.drawable.ic_access_time_black_24dp)
                     .setGroupSummary(true)
                     .setStyle(inboxStyle)
@@ -100,14 +101,10 @@ public class NotificationReminder extends BroadcastReceiver {
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID,CHANNEL_NAME,NotificationManager.IMPORTANCE_DEFAULT);
             builder.setChannelId(CHANNEL_ID);
-            if(notificationManager != null){
-                notificationManager.createNotificationChannel(notificationChannel);
-            }
+            notificationManager.createNotificationChannel(notificationChannel);
         }
         Notification notification = builder.build();
-        if(notificationManager!=null){
-            notificationManager.notify(idNotifyToday,notification);
-        }
+        notificationManager.notify(idNotifyToday,notification);
     }
 
     private void showDailyNotify(Context context){
@@ -120,8 +117,8 @@ public class NotificationReminder extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.ic_launcher_foreground))
-                .setContentTitle("Movie DB Miss You")
-                .setContentText("click here to see what's new")
+                .setContentTitle(context.getResources().getString(R.string.daily_notify_title))
+                .setContentText(context.getResources().getString(R.string.daily_notify_content))
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setColor(ContextCompat.getColor(context, android.R.color.transparent))
@@ -206,8 +203,7 @@ public class NotificationReminder extends BroadcastReceiver {
                 int idNotifyToday = 0;
                 Intent intent = new Intent();
                 for(Movie movie:movies){
-                    intent.putExtra(MovieDetailActivity.TAG_DETAIL_MOVIE,movie);
-                    intent.putExtra(TAG_TITLE_NOTIFY, "Today release " + movie.getOriginalTitle());
+                    intent.putExtra(TAG_TITLE_NOTIFY, context.getResources().getString(R.string.today_release_notify) + movie.getOriginalTitle());
                     intent.putExtra(TAG_MESSAGE_NOTIFY, movie.getOverview());
                     showReleaseTodayNotify(context, intent, idNotifyToday);
                     idNotifyToday++;

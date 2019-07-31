@@ -45,6 +45,9 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 import static android.transition.TransitionManager.beginDelayedTransition;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String TAG_LIST_FAV_TV = "tag_list_fav_tv";
     public static final String TAG_LANG = "tag_lang";
     public static final String TAG_STATE_MENU = "tag_state_menu";
+    public static final String TAG_STATE_NAV_DRAWER = "tag_state_nav_drawer";
     //data untuk ditampilkan pada UI
     ArrayList<Movie> listMovies = new ArrayList<>();
     ArrayList<TVShow> listTVShows = new ArrayList<>();
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean doingSearchMovie = false;
     private boolean doingSearchTV = false;
     private int stateMenu = R.id.movie_nav;
+    private int stateNavigationDrawer = R.id.nav_home;
     /*
      * @method_for = implementasi listener bottom navigasi
      * */
@@ -229,6 +234,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
+
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -236,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 searchView.setLayoutParams(widthMatchParent);
             }
         });
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -267,12 +274,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -291,13 +298,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchHint = findViewById(R.id.search_hint);
         setSearchViewSetting();
         containerSet = new ConstraintSet();
-        bottomNavView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         movieViewModel.getMovies().observe(this, getMovies);
         tvShowViewModel = ViewModelProviders.of(this).get(TVShowViewModel.class);
         tvShowViewModel.getTVShows().observe(this, getTVShows);
         movieViewModel.getNowReleasedMovies().observe(this, getReleasedNow);
         CONFIG_LOCALE = Locale.getDefault().getLanguage();
+        stateNavigationDrawer = getIntent().getIntExtra(TAG_STATE_NAV_DRAWER,R.id.nav_home);
+        doShowCase();
         if (savedInstanceState == null) {
             reloadFavouriteData();
             createDataTVShows();
@@ -309,8 +317,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             listFavouriteMovies = savedInstanceState.getParcelableArrayList(TAG_LIST_FAV_MOVIE);
             listFavouriteTV = savedInstanceState.getParcelableArrayList(TAG_LIST_FAV_TV);
             stateMenu = savedInstanceState.getInt(TAG_STATE_MENU);
+            stateNavigationDrawer = savedInstanceState.getInt(TAG_STATE_NAV_DRAWER);
         }
-        bottomNavView.setSelectedItemId(stateMenu);
+        navigationView.setCheckedItem(stateNavigationDrawer);
+        switch (stateNavigationDrawer){
+            case R.id.nav_home:
+                pushFragmentLayoutToBottomNav();
+                break;
+            case R.id.nav_released_now:
+                pushFragmentLayoutToParent();
+                showNowReleasedFragment();
+                break;
+        }
     }
 
     @Override
@@ -343,28 +361,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Intent intent;
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (id == R.id.nav_home) {
             pushFragmentLayoutToBottomNav();
             drawer.closeDrawer(GravityCompat.START);
+            stateNavigationDrawer = id;
             return true;
         }
         else if(id == R.id.nav_released_now){
             pushFragmentLayoutToParent();
             showNowReleasedFragment();
             drawer.closeDrawer(GravityCompat.START);
+            stateNavigationDrawer = id;
             return true;
         }
         else if (id == R.id.nav_tools) {
-            Intent intent = new Intent(this, ReminderActivity.class);
+            intent = new Intent(this, ReminderActivity.class);
             startActivity(intent);
-            return false;
         } else if (id == R.id.nav_share) {
-
+            intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.sharing_app));
+            intent.setType("text/plain");
+            startActivity(intent);
         } else if (id == R.id.nav_about) {
-
+            intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
         }
-        return true;
+        return false;
+    }
+
+    private void doShowCase(){
+        ShowcaseConfig showcaseConfig = new ShowcaseConfig();
+        showcaseConfig.setDelay(500);
+        MaterialShowcaseSequence showcaseSequence = new MaterialShowcaseSequence(this,getPackageName());
+        showcaseSequence.setConfig(showcaseConfig);
+        showcaseConfig.setDismissTextColor(getColor(R.color.colorAccentSecondary));
+        showcaseSequence.addSequenceItem(bottomNavView,getResources().getString(R.string.showcase_bottom_nav),"GOT IT");
+        showcaseSequence.addSequenceItem(toolbar,getResources().getString(R.string.showcase_toolbar),"GOT IT");
+        showcaseSequence.addSequenceItem(searchView,getResources().getString(R.string.showcase_search),"GOT IT");
+        showcaseSequence.addSequenceItem(findViewById(R.id.example_showcase),getResources().getString(R.string.showcase_container_fragment),"GOT IT");
+        showcaseSequence.start();
     }
 
     @Override
@@ -419,6 +457,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         outState.putInt(TAG_STATE_MENU, stateMenu);
         outState.putParcelableArrayList(TAG_LIST_FAV_TV, listFavouriteTV);
         outState.putString(TAG_LANG, CONFIG_LOCALE);
+        outState.putInt(TAG_STATE_NAV_DRAWER, stateNavigationDrawer);
     }
 
     private void showMovieFragment() {

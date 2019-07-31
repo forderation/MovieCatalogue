@@ -82,12 +82,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             Glide.with(getApplicationContext())
                     .load(Movie.PATH_IMG + movie.getBackdropPath())
                     .apply(new RequestOptions().centerCrop())
-                    .into(new SimpleTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                            expandedImage.setBackground(resource);
-                        }
-                    });
+                    .into(expandedImage);
             uri = Uri.parse(CONTENT_URI_MOVIE +"/"+movie.getId());
             Cursor cursor = getContentResolver().query(uri,null,null,null,null);
             if (cursor != null && cursor.getCount()>0) {
