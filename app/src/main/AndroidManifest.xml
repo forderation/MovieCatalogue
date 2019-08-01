@@ -22,9 +22,13 @@
         <activity android:name=".ReminderActivity"></activity>
 
         <receiver
-            android:name=".receiver.NotificationReminder"
+            android:name=".receiver.ReleasedTodayReminder"
             android:enabled="true"
             android:exported="true" />
+        <receiver
+            android:name=".receiver.DailyReminder"
+            android:enabled="true"
+            android:exported="true"/>
         <receiver android:name=".widget.FavMovieWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

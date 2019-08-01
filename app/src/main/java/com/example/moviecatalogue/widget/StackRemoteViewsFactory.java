@@ -10,6 +10,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
+import com.example.moviecatalogue.MovieDetailActivity;
 import com.example.moviecatalogue.R;
 import com.example.moviecatalogue.database.DatabaseContract;
 import com.example.moviecatalogue.model.Movie;

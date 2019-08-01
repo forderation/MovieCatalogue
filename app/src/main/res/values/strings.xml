@@ -73,4 +73,10 @@
     <string name="daily_reminder">Daily Reminder</string>
     <string name="daily_reminder_desc">Reminder for return to app</string>
     <string name="dicoding" translatable="false">dicoding</string>
+    <string name="released_today_deactivated">Released today reminder has been deactivated</string>
+    <string name="released_today_activated">Daily released today reminder has been activated</string>
+    <string name="released_today_activate_fail">Fail to activate daily released today reminder</string>
+    <string name="daily_reminder_deactivated">Daily reminder has been deactivated</string>
+    <string name="daily_reminder_activated">Daily reminder has been activated</string>
+    <string name="fail_activated_daily_reminder">Fail to activate daily reminder</string>
 </resources>

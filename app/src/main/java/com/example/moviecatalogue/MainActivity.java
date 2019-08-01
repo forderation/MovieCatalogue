@@ -395,9 +395,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void doShowCase(){
         ShowcaseConfig showcaseConfig = new ShowcaseConfig();
         showcaseConfig.setDelay(500);
+        showcaseConfig.setDismissTextColor(getResources().getColor(R.color.colorAccentSecondary));
         MaterialShowcaseSequence showcaseSequence = new MaterialShowcaseSequence(this,getPackageName());
         showcaseSequence.setConfig(showcaseConfig);
-        showcaseConfig.setDismissTextColor(getColor(R.color.colorAccentSecondary));
         showcaseSequence.addSequenceItem(bottomNavView,getResources().getString(R.string.showcase_bottom_nav),"GOT IT");
         showcaseSequence.addSequenceItem(toolbar,getResources().getString(R.string.showcase_toolbar),"GOT IT");
         showcaseSequence.addSequenceItem(searchView,getResources().getString(R.string.showcase_search),"GOT IT");

@@ -62,4 +62,10 @@
     <string name="showcase_search">Jelajahi atau cari film anda disini</string>
     <string name="showcase_toolbar">Atur pengaturan bahasa pada bagian kanan dan lihat menu aplikasi pada bagian kiri</string>
     <string name="today_release_notify">Hari ini rilis</string>
+    <string name="daily_reminder_activated">Pengingat harian telah diaktifkan</string>
+    <string name="daily_reminder_deactivated">Pengingat harian telah dinonaktifkan</string>
+    <string name="fail_activated_daily_reminder">Gagal mengaktifkan pengingat harian</string>
+    <string name="released_today_activate_fail">Gagal mengaktifkan pengingat harian rilis film</string>
+    <string name="released_today_activated">Pengingat harian rilis aktif</string>
+    <string name="released_today_deactivated">Pengingat harian rilis dinonaktifkan</string>
 </resources>

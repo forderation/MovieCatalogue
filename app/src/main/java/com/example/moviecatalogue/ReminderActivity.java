@@ -12,12 +12,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.moviecatalogue.receiver.NotificationReminder;
+import com.example.moviecatalogue.receiver.DailyReminder;
+import com.example.moviecatalogue.receiver.ReleasedTodayReminder;
 
 public class ReminderActivity extends AppCompatActivity {
     String keyReleasedToday, keyDailyReminder;
     private SharedPreferences sharedPref;
-    private NotificationReminder notificationReminder;
+    private ReleasedTodayReminder releasedTodayReminder;
+    private DailyReminder dailyReminder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,51 +60,52 @@ public class ReminderActivity extends AppCompatActivity {
                 }
             }
         });
-        notificationReminder = new NotificationReminder();
+        releasedTodayReminder = new ReleasedTodayReminder();
+        dailyReminder = new DailyReminder();
     }
 
     private void startJobReleasedToday() {
-        if (notificationReminder.setReleasedToday(this)) {
+        if (releasedTodayReminder.setReleasedToday(this)) {
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putBoolean(keyReleasedToday, true);
             editor.apply();
-            showToast("Daily released today reminder has been activated");
+            showToast(getResources().getString(R.string.released_today_activated));
         } else {
-            showToast("Fail to activate daily released today reminder");
+            showToast(getResources().getString(R.string.released_today_activate_fail));
         }
     }
 
     private void cancelJobReleasedToday() {
-        Intent intent = new Intent(this, NotificationReminder.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), NotificationReminder.ID_RELEASE_TODAY, intent, 0);
+        Intent intent = new Intent(this, ReleasedTodayReminder.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), ReleasedTodayReminder.ID_RELEASE_TODAY, intent, 0);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(keyReleasedToday, false);
         editor.apply();
-        showToast("Daily reminder has been deactivated");
+        showToast(getResources().getString(R.string.daily_reminder_deactivated));
     }
 
     private void startJobDailyReminder() {
-        if (notificationReminder.setDailyRemainder(this)) {
+        if (dailyReminder.setDailyRemainder(this)) {
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putBoolean(keyDailyReminder, true);
             editor.apply();
-            showToast("Daily reminder has been activated");
+            showToast(getResources().getString(R.string.daily_reminder_activated));
         } else {
-            showToast("Fail to activate daily reminder");
+            showToast(getResources().getString(R.string.fail_activated_daily_reminder));
         }
     }
 
     private void cancelJobDailyReminder() {
-        Intent intent = new Intent(this, NotificationReminder.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), NotificationReminder.ID_DAILY_REMINDER, intent, 0);
+        Intent intent = new Intent(this, DailyReminder.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), DailyReminder.ID_DAILY_REMINDER, intent, 0);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(keyDailyReminder, false);
         editor.apply();
-        showToast("Released today reminder has been deactivated");
+        showToast(getResources().getString(R.string.released_today_deactivated));
     }
 
     private void showToast(String msgToast) {

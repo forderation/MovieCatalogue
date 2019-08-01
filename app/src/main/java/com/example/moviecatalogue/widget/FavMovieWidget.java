@@ -7,10 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 import android.widget.Toast;
-
-import com.example.moviecatalogue.MovieDetailActivity;
 import com.example.moviecatalogue.R;
-import com.example.moviecatalogue.model.Movie;
 
 /**
  * Implementation of App Widget functionality.
